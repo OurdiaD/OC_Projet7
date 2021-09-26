@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="your_lunch">Votre repas</string>
+    <string name="settings">Options</string>
+    <string name="logout">Déconnexion</string>
+    <string name="map_view">Carte</string>
+    <string name="list_view">Liste</string>
+    <string name="workmates">Collegues</string>
+</resources>
