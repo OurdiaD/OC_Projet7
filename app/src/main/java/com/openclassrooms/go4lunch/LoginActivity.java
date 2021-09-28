@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.firebase.ui.auth.AuthUI;
+
 import com.openclassrooms.go4lunch.databinding.ActivityLoginBinding;
 
 
