@@ -1,0 +1,19 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--<item android:drawable="@drawable/reunion"/>
+    <item android:top="120dp">
+        <bitmap
+            android:src="@drawable/ic_dining"
+            android:gravity="top|center_horizontal" />
+    </item>-->
+    <!--<item android:drawable="@drawable/reunion"
+        android:scaleType="centerCrop"
+        app:tint="#7D000000"/>-->
+    <item>
+        <bitmap
+            android:src="@drawable/reunion"
+            android:gravity="top|center_horizontal"
+            android:scaleType="center" />
+    </item>
+
+</layer-list>
