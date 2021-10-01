@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.firebase.ui.auth.AuthUI;
 import com.openclassrooms.go4lunch.databinding.ActivityLoginBinding;
 
 
@@ -21,12 +22,12 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        /*binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());*/
 
-        /*List<AuthUI.IdpConfig> providers = Arrays.asList(
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.EmailBuilder().build());
+                new AuthUI.IdpConfig.FacebookBuilder().build());
 
         startActivityForResult(
                 AuthUI.getInstance()
@@ -36,6 +37,6 @@ public class LoginActivity extends AppCompatActivity {
                         .setIsSmartLockEnabled(false, true)
                         .setLogo(R.drawable.ic_dining)
                         .build(),
-                RC_SIGN_IN);*/
+                RC_SIGN_IN);
     }
 }
