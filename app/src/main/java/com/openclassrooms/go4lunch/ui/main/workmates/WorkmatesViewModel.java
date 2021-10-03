@@ -1,4 +1,4 @@
-package com.openclassrooms.go4lunch.ui.workmates;
+package com.openclassrooms.go4lunch.ui.main.workmates;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

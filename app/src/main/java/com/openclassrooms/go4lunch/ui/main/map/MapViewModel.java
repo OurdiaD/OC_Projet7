@@ -1,16 +1,16 @@
-package com.openclassrooms.go4lunch.ui.list;
+package com.openclassrooms.go4lunch.ui.main.map;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ListViewModel extends ViewModel {
+public class MapViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public ListViewModel() {
+    public MapViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        mText.setValue("This is home fragment");
     }
 
     public LiveData<String> getText() {

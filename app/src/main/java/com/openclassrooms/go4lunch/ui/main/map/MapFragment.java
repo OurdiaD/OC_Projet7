@@ -1,4 +1,4 @@
-package com.openclassrooms.go4lunch.ui.map;
+package com.openclassrooms.go4lunch.ui.main.map;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
+
 
 public class MapFragment extends Fragment {
 

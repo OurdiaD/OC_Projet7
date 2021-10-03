@@ -1,4 +1,4 @@
-package com.openclassrooms.go4lunch.ui.workmates;
+package com.openclassrooms.go4lunch.ui.main.workmates;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
