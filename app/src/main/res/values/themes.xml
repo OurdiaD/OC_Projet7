@@ -47,4 +47,8 @@
         <item name="android:background">#24141414</item>
         <item name="android:windowBackground">@drawable/bg_login</item>
     </style>
+
+    <style name="drawer">
+        <item name="textAllCaps">true</item>
+    </style>
 </resources>

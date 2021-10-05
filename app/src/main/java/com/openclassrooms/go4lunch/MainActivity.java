@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -51,11 +52,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            // User is signed in
-            Snackbar.make(binding.appBarMain.mainLayout, user.getDisplayName(), Snackbar.LENGTH_SHORT).show();
+            /*TextView navName = findViewById(R.id.nav_name);
+            TextView navMail = findViewById(R.id.nav_email);
+            navName.setText(user.getDisplayName());
+            navMail.setText(user.getEmail());*/
         } else {
-            // No user is signed in
-            Snackbar.make(binding.appBarMain.mainLayout, "pas d'utilisateur", Snackbar.LENGTH_SHORT).show();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
