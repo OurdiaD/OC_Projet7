@@ -7,10 +7,14 @@
     <string name="list_view">Liste</string>
     <string name="workmates">Collegues</string>
     <string name="search">Recherche</string>
+    <string name="subtitle_login">Trouveer un restaurant sympa et invité vos collegues!</string>
 
     <string name="error_not_connected">You have to be connected</string>
     <string name="error_authentication_canceled">Connexion caceled</string>
     <string name="error_no_internet">No connexion network</string>
     <string name="error_unknown_error">Unknown error </string>
     <string name="connection_succeed">Connection succeed !</string>
+
+    <string name="fb_login">Sign in with Facebook</string>
+    <string name="google_login">Sign in with Google</string>
 </resources>

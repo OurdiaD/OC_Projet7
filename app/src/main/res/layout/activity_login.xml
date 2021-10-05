@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,13 +18,79 @@
 
         app:srcCompat="@drawable/reunion" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#9B000000"/>
+
+    <ImageView
+        android:id="@+id/icon_login"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="32dp"
+        app:srcCompat="@drawable/ic_dining"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/title_login"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/app_name"
+        android:textSize="80sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/icon_login" />
+
+    <TextView
+        android:id="@+id/subtitle_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:textStyle="italic"
+        android:text="@string/subtitle_login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_login" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/fb_login_button"
+        style="@style/FacebookLoginButtonStyle"
+        android:layout_height="0dp"
+        android:layout_width="292dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/google_login_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:com_facebook_login_text="@string/fb_login"
+        app:com_facebook_logout_text="@string/fb_login" />
+
+    <!--<com.google.android.gms.common.SignInButton
+        android:id="@+id/google_login_button"
+        style="@style/GoogleLoginButtonStyle"
+        android:layout_height="65dp"
+        android:layout_width="300dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/google_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>-->
+
+    <com.shobhitpuri.custombuttons.GoogleSignInButton
+        android:id="@+id/google_login_button"
+        android:layout_height="60dp"
+        android:layout_width="300dp"
+        android:layout_marginBottom="16dp"
+        android:layout_centerInParent="true"
+        android:text="@string/google_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,8 +24,8 @@
     <style name="Theme.Go4Lunch.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="LoginTheme" parent="FirebaseUI">
-        <item name="colorPrimary">#3A424242</item>
-        <item name="colorPrimaryDark">#B7222222</item>
+        <item name="colorPrimary">#3AFFFFFF</item>
+        <item name="colorPrimaryDark">#D0222222</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
         <item name="colorControlNormal">@android:color/white</item>
@@ -39,16 +39,29 @@
         <item name="windowNoTitle">true</item>
         <item name="android:textColorHint">@android:color/white</item>
 
-
-        <item name="android:windowBackground">@drawable/bglogin</item>
     </style>
 
-    <style name="bg_login">
-        <item name="android:background">#24141414</item>
-        <item name="android:windowBackground">@drawable/bg_login</item>
-    </style>
 
     <style name="drawer">
         <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="FacebookLoginButtonStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingLeft">13dp</item>
+        <item name="android:paddingTop">18dp</item>
+        <item name="android:paddingBottom">18dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="GoogleLoginButtonStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
     </style>
 </resources>

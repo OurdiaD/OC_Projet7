@@ -2,14 +2,19 @@ package com.openclassrooms.go4lunch;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
 
         /*binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());*/
-
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
+        initLayout();
+        /*List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.FacebookBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
 
@@ -43,13 +48,45 @@ public class LoginActivity extends AppCompatActivity {
                         .setIsSmartLockEnabled(false, true)
                         .setLogo(R.drawable.ic_dining)
                         .build(),
-                RC_SIGN_IN);
+                RC_SIGN_IN);*/
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        setGooglePlusButtonText();
+    }
+
+    public void initLayout(){
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+
+        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
+                .Builder(R.layout.activity_login)
+                .setGoogleButtonId(R.id.google_login_button)
+                .setFacebookButtonId(R.id.fb_login_button)
+                .build();
+
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false, true)
+                        .setTheme(R.style.LoginTheme)
+                        .setAuthMethodPickerLayout(customLayout)
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+
     }
 
     @Override
@@ -87,5 +124,24 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    protected void setGooglePlusButtonText() {
+        // Find the TextView that is inside of the SignInButton and set its text
+        SignInButton signInButton = findViewById(R.id.google_login_button);
+
+        if (signInButton != null){
+            for (int i = 0; i < signInButton.getChildCount(); i++) {
+                View v = signInButton.getChildAt(i);
+
+                if (v instanceof TextView) {
+                    TextView tv = (TextView) v;
+                    tv.setText(R.string.google_login);
+                    return;
+                }
+            }
+        }
+
+
     }
 }
