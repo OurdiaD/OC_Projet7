@@ -8,13 +8,14 @@
     <string name="workmates">Collegues</string>
     <string name="search">Recherche</string>
     <string name="subtitle_login">Trouveer un restaurant sympa et invité vos collegues!</string>
+    <string name="no_decided">N\'a pas encore décidé</string>
 
-    <string name="error_not_connected">You have to be connected</string>
-    <string name="error_authentication_canceled">Connexion caceled</string>
-    <string name="error_no_internet">No connexion network</string>
-    <string name="error_unknown_error">Unknown error </string>
-    <string name="connection_succeed">Connection succeed !</string>
+    <string name="error_not_connected">Vous devez vous connecter !</string>
+    <string name="error_authentication_canceled">Authentification annulée&#8230;</string>
+    <string name="error_no_internet">Aucune connexion internet !</string>
+    <string name="error_unknown_error">Une erreur inconnue s\'est produite&#8230;</string>
+    <string name="connection_succeed">Authentification réussie !</string>
 
-    <string name="fb_login">Sign in with Facebook</string>
-    <string name="google_login">Sign in with Google</string>
+    <string name="fb_login">Se connecter avec Facebook</string>
+    <string name="google_login">Se connecter avec Google</string>
 </resources>

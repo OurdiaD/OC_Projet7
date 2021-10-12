@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.openclassrooms.go4lunch.databinding.ActivityLoginBinding;
+import com.openclassrooms.go4lunch.repositories.UserRepository;
 
 
 import java.util.Arrays;
@@ -28,27 +29,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private ActivityLoginBinding binding;
+    private UserRepository userRepository;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());*/
+        userRepository = new UserRepository();
         initLayout();
-        /*List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
-
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setTheme(R.style.LoginTheme)
-                        .setAvailableProviders(providers)
-                        .setIsSmartLockEnabled(false, true)
-                        .setLogo(R.drawable.ic_dining)
-                        .build(),
-                RC_SIGN_IN);*/
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -57,12 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        setGooglePlusButtonText();
-    }
 
     public void initLayout(){
         List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -107,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
-                //userManager.createUser();
+                userRepository.createUser();
                 showSnackBar(getString(R.string.connection_succeed));
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
@@ -126,22 +108,4 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    protected void setGooglePlusButtonText() {
-        // Find the TextView that is inside of the SignInButton and set its text
-        SignInButton signInButton = findViewById(R.id.google_login_button);
-
-        if (signInButton != null){
-            for (int i = 0; i < signInButton.getChildCount(); i++) {
-                View v = signInButton.getChildAt(i);
-
-                if (v instanceof TextView) {
-                    TextView tv = (TextView) v;
-                    tv.setText(R.string.google_login);
-                    return;
-                }
-            }
-        }
-
-
-    }
 }
