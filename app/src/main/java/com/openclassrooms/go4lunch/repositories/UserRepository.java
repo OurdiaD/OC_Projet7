@@ -1,5 +1,8 @@
 package com.openclassrooms.go4lunch.repositories;
 
+import android.net.Uri;
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -12,7 +15,6 @@ import com.openclassrooms.go4lunch.models.User;
 public class UserRepository {
     private static volatile UserRepository instance;
     private static final String COLLECTION_NAME = "users";
-    private static final String USERNAME_FIELD = "username";
 
     public static UserRepository getInstance() {
         UserRepository result = instance;
@@ -48,8 +50,10 @@ public class UserRepository {
             String email= user.getEmail();
             String username = user.getDisplayName();
             String uid = user.getUid();
+            String photoUrl = String.valueOf(user.getPhotoUrl());
+            Log.d("lol", photoUrl);
 
-            User userToCreate = new User(uid, username, email);
+            User userToCreate = new User(uid, username, email, photoUrl);
 
             Task<DocumentSnapshot> userData = getUserData();
             // If the user already exist in Firestore, we get his data (isMentor)

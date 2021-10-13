@@ -48,7 +48,6 @@ public class WorkmatesFragment extends Fragment {
                         User user = document.toObject(User.class);
                         UsersList.add(user);
                     }
-                    Log.d("lol",""+UsersList);
                     WorkmateAdapter workmateAdapter = new WorkmateAdapter(UsersList);
                     recyclerView.setAdapter(workmateAdapter);
                 } else {

@@ -1,5 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.workmates;
 
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.models.User;
 
@@ -17,7 +20,7 @@ import java.util.List;
 
 public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.WorkmateViewHolder> {
     private List<User> users;
-
+    private Context context;
 
     public WorkmateAdapter(List<User> users){
         this.users = users;
@@ -26,6 +29,7 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
     @NonNull
     @Override
     public WorkmateAdapter.WorkmateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_list_workmate, parent, false);
         return new WorkmateViewHolder(view);
@@ -35,7 +39,10 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
     public void onBindViewHolder(@NonNull WorkmateAdapter.WorkmateViewHolder holder, int position) {
         User user = users.get(position);
         holder.workmateText.setText(user.getFullname());
-        Log.d("lol",user.getFullname());
+        Glide.with(context)
+                .load(user.getPhotoUrl())
+                .circleCrop()
+                .into(holder.workmateImage);
     }
 
     @Override
