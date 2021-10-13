@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+    private FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
-
+        user = FirebaseAuth.getInstance().getCurrentUser();
         initNav();
         /*binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         if (user != null) {
             /*TextView navName = findViewById(R.id.nav_name);
             TextView navMail = findViewById(R.id.nav_email);
@@ -114,6 +117,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavView, navController);
+
+        View headerNav = navigationView.getHeaderView(0);
+        TextView nameNav = headerNav.findViewById(R.id.nav_name);
+        TextView emaiNav = headerNav.findViewById(R.id.nav_email);
+        ImageView picNav = headerNav.findViewById(R.id.nav_pic);
+        if (user != null){
+            nameNav.setText(user.getDisplayName());
+            emaiNav.setText(user.getEmail());
+            Glide.with(getBaseContext())
+                    .load(user.getPhotoUrl())
+                    .circleCrop()
+                    .into(picNav);
+        }
     }
 
 
