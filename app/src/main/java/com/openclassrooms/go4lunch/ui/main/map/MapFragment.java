@@ -72,14 +72,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     PackageManager.PERMISSION_GRANTED);
         } else {
             mMap.setMyLocationEnabled(true);
-            /*mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-                @Override
-                public void onMyLocationChange(Location arg0) {
-                    LatLng myLatLng = new LatLng(arg0.getLatitude(), arg0.getLongitude());
-                    mMap.addMarker(new MarkerOptions().position(myLatLng).title("It's Me!"));
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-                }
-            });*/
             FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
@@ -88,8 +80,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
                                 LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                mMap.addMarker(new MarkerOptions().position(myLatLng).title("It's Me!"));
-                                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+                                //mMap.addMarker(new MarkerOptions().position(myLatLng).title("It's Me!"));
+                                CameraPosition myPosition = new CameraPosition.Builder()
+                                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+
+                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(myPosition));
                             }
                         }
                     });
