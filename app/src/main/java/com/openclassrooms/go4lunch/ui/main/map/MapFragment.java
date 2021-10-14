@@ -1,6 +1,10 @@
 package com.openclassrooms.go4lunch.ui.main.map;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,17 +12,32 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
 
+import java.util.concurrent.Executor;
 
-public class MapFragment extends Fragment {
+
+public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     private MapViewModel homeViewModel;
     private FragmentMapBinding binding;
+    private GoogleMap mMap;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -27,14 +46,12 @@ public class MapFragment extends Fragment {
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("mapFragment");
+        if (mapFragment != null) {
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+            mapFragment.getMapAsync(this);
+            Log.d("lol mapfrag", "if");
+        }
         return root;
     }
 
@@ -42,5 +59,40 @@ public class MapFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mMap = googleMap;
+        Location myLocation;
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PackageManager.PERMISSION_GRANTED);
+        } else {
+            mMap.setMyLocationEnabled(true);
+            /*mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+                @Override
+                public void onMyLocationChange(Location arg0) {
+                    LatLng myLatLng = new LatLng(arg0.getLatitude(), arg0.getLongitude());
+                    mMap.addMarker(new MarkerOptions().position(myLatLng).title("It's Me!"));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+                }
+            });*/
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                mMap.addMarker(new MarkerOptions().position(myLatLng).title("It's Me!"));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+                            }
+                        }
+                    });
+        }
     }
 }
