@@ -1,6 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.map;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
+import com.openclassrooms.go4lunch.ui.main.MainViewModel;
 
 import java.util.concurrent.Executor;
 
@@ -38,19 +40,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private MapViewModel homeViewModel;
     private FragmentMapBinding binding;
     private GoogleMap mMap;
+    private MainViewModel mainViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(MapViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(MapViewModel.class);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("mapFragment");
         if (mapFragment != null) {
-
             mapFragment.getMapAsync(this);
-            Log.d("lol mapfrag", "if");
+            /*Log.d("lol mapfrag", "if");*/
         }
         return root;
     }
@@ -71,23 +73,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
                     PackageManager.PERMISSION_GRANTED);
         } else {
-            mMap.setMyLocationEnabled(true);
-            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                //mMap.addMarker(new MarkerOptions().position(myLatLng).title("It's Me!"));
-                                CameraPosition myPosition = new CameraPosition.Builder()
-                                        .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
-
-                                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(myPosition));
-                            }
-                        }
-                    });
+            setmMap(googleMap);
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    public void setmMap(GoogleMap googleMap){
+        mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            //mMap.addMarker(new MarkerOptions().position(myLatLng).title("It's Me!"));
+                            CameraPosition myPosition = new CameraPosition.Builder()
+                                    .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
+                            /*Log.d("lol location", ""+location);
+                            Log.d("lol latlng", ""+myLatLng);*/
+                            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(myPosition));
+                            mainViewModel.setLatLng(location);
+                            mainViewModel.getReponsePlace();
+                        }
+                    }
+                });
     }
 }
