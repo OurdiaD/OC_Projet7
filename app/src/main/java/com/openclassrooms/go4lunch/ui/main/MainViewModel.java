@@ -15,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
@@ -47,7 +48,7 @@ public class MainViewModel extends ViewModel {
             public void run() {
                 //String location ;
                 Resources res = Resources.getSystem();
-                String apiKey = "";
+                String apiKey = BuildConfig.API_KEY;
                 String requestUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"+
                         "location="+currentLatLng.latitude +","+currentLatLng.longitude+
                         "&radius=500&types=food&name=cruise&key="+apiKey;
