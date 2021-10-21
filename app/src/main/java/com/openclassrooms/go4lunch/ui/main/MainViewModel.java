@@ -27,18 +27,32 @@ import java.util.concurrent.Executors;
 
 public class MainViewModel extends ViewModel {
     LatLng currentLatLng;
-    Location curentLocation;
+    Location currentLocation;
     String reponsePlace;
 
+    private static MainViewModel instance;
 
+    public static MainViewModel getInstance() {
+        if (instance == null) {
+            synchronized (MainViewModel.class) {
+                if (instance == null) {
+                    instance = new MainViewModel();
+                }
+            }
+        }
+        return instance;
+    }
     public void setLatLng(Location location){
+        currentLocation = location;
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
     }
 
     public String getReponsePlace(){
         if (reponsePlace == null){
+            Log.d("lol mainviewmodel", "if null");
             requestPlace();
         }
+        Log.d("lol mainviewmodel", "reponse");
         return reponsePlace;
     }
 
@@ -61,6 +75,7 @@ public class MainViewModel extends ViewModel {
                 try {
                     Response response = client.execute();
                     Log.d("lol place", ""+response.body().string());
+                    Log.d("lol place", ""+requestUrl);
                     reponsePlace = response.body().string();
                 } catch (IOException e) {
                     e.printStackTrace();

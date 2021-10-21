@@ -1,6 +1,5 @@
-package com.openclassrooms.go4lunch.repositories;
+package com.openclassrooms.go4lunch.datas.repositories;
 
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.gms.tasks.Task;

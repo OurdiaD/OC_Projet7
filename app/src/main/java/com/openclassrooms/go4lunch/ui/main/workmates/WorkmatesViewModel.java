@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.openclassrooms.go4lunch.repositories.UserRepository;
+import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 
 public class WorkmatesViewModel extends ViewModel {
 
