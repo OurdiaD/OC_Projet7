@@ -12,11 +12,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.go4lunch.MainActivity;
 import com.openclassrooms.go4lunch.databinding.FragmentListBinding;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.main.MainViewModel;
+import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 
 import java.util.List;
 
@@ -33,18 +35,21 @@ public class ListFragment extends Fragment {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        RecyclerView recyclerView = binding.listPlaces;
 
         mainViewModel = MainViewModel.getInstance();
         List<Result> list = mainViewModel.getReponsePlace();
         Log.d("lol list fragment", ""+list);
+        ListPlaceAdapter listPlaceAdapter = new ListPlaceAdapter(list);
+        recyclerView.setAdapter(listPlaceAdapter);
 
-        final TextView textView = binding.textGallery;
+        /*final TextView textView = binding.textGallery;
         listViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
         return root;
     }
 

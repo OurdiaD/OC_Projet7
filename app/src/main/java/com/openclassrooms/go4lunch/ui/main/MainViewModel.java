@@ -63,30 +63,6 @@ public class MainViewModel extends ViewModel {
     }
 
     public List<Result> requestPlace()  {
-        /*Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                String apiKey = BuildConfig.API_KEY;
-                String requestUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"+
-                        "location="+currentLatLng.latitude +","+currentLatLng.longitude+
-                        "&radius=500&types=food&name=cruise&key="+apiKey;
-                Request request = new Request.Builder()
-                        .url(requestUrl)
-                        .method("GET", null)
-                        .build();
-
-                Call client = new OkHttpClient().newCall(request);
-                try {
-                    Response response = client.execute();
-                    Log.d("lol place", ""+response.body().string());
-                    Log.d("lol place", ""+requestUrl);
-                    reponsePlace = response.body().string();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
-
         String apiKey = BuildConfig.API_KEY;
         String requestUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"+
                 "location="+currentLatLng.latitude +","+currentLatLng.longitude+
@@ -94,9 +70,9 @@ public class MainViewModel extends ViewModel {
         //Retrofit retro = RetrofitClient.getClient("https://maps.googleapis.com/maps/");
         Map<String, String> params = new HashMap<String, String>();
         params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
-        params.put("radius", "500");
-        params.put("types", "food");
-        params.put("name", "cruise");
+        params.put("radius", "1000");
+        params.put("type", "restaurant");
+        //params.put("rankby", "distance");
         params.put("key", apiKey);
         Log.d("lol mainvm1", ""+ requestUrl);
         Call<Root> placesResult = mapsInterface.getAllPlaces(params);
