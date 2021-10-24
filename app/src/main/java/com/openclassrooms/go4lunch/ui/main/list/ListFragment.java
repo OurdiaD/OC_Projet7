@@ -1,6 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.list;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.openclassrooms.go4lunch.MainActivity;
 import com.openclassrooms.go4lunch.databinding.FragmentListBinding;
+import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.main.MainViewModel;
+
+import java.util.List;
 
 public class ListFragment extends Fragment {
 
@@ -29,9 +33,10 @@ public class ListFragment extends Fragment {
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        MainActivity mainActivity = (MainActivity) getActivity();
+
         mainViewModel = MainViewModel.getInstance();
-        mainViewModel.getReponsePlace();
+        List<Result> list = mainViewModel.getReponsePlace();
+        Log.d("lol list fragment", ""+list);
 
         final TextView textView = binding.textGallery;
         listViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {

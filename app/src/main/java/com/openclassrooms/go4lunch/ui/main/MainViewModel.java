@@ -1,34 +1,34 @@
 package com.openclassrooms.go4lunch.ui.main;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.location.Location;
 import android.util.Log;
 
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.openclassrooms.go4lunch.BuildConfig;
-import com.openclassrooms.go4lunch.R;
-import com.squareup.okhttp.Call;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
+import com.openclassrooms.go4lunch.datas.MapsInterface;
+import com.openclassrooms.go4lunch.datas.RetrofitClient;
+import com.openclassrooms.go4lunch.models.maps.Result;
+import com.openclassrooms.go4lunch.models.maps.Root;
 
-import java.io.IOException;
-import java.util.concurrent.Executors;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MainViewModel extends ViewModel {
     LatLng currentLatLng;
     Location currentLocation;
     String reponsePlace;
+    MapsInterface mapsInterface;
+    List<Result> listOfPlace;
 
     private static MainViewModel instance;
 
@@ -42,26 +42,30 @@ public class MainViewModel extends ViewModel {
         }
         return instance;
     }
+
+    public MainViewModel(){
+        Retrofit retro = RetrofitClient.getClient("https://maps.googleapis.com/maps/");
+        mapsInterface = RetrofitClient.getInterface();
+    }
+
     public void setLatLng(Location location){
         currentLocation = location;
         currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
     }
 
-    public String getReponsePlace(){
-        if (reponsePlace == null){
+    public List<Result> getReponsePlace(){
+        if (listOfPlace == null){
             Log.d("lol mainviewmodel", "if null");
             requestPlace();
         }
         Log.d("lol mainviewmodel", "reponse");
-        return reponsePlace;
+        return listOfPlace;
     }
 
-    public void requestPlace()  {
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
+    public List<Result> requestPlace()  {
+        /*Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                //String location ;
-                Resources res = Resources.getSystem();
                 String apiKey = BuildConfig.API_KEY;
                 String requestUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"+
                         "location="+currentLatLng.latitude +","+currentLatLng.longitude+
@@ -81,8 +85,46 @@ public class MainViewModel extends ViewModel {
                     e.printStackTrace();
                 }
             }
+        });*/
+
+        String apiKey = BuildConfig.API_KEY;
+        String requestUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"+
+                "location="+currentLatLng.latitude +","+currentLatLng.longitude+
+                "&radius=500&types=food&name=cruise&key="+apiKey+"/";
+        //Retrofit retro = RetrofitClient.getClient("https://maps.googleapis.com/maps/");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
+        params.put("radius", "500");
+        params.put("types", "food");
+        params.put("name", "cruise");
+        params.put("key", apiKey);
+        Log.d("lol mainvm1", ""+ requestUrl);
+        Call<Root> placesResult = mapsInterface.getAllPlaces(params);
+
+        Log.d("lol mainvm2", ""+ placesResult.isExecuted());
+        Log.d("lol mainvm3", ""+ placesResult.toString());
+        placesResult.enqueue(new Callback<Root>() {
+            @Override
+            public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root>response) {
+                Log.d("lol response", "onrep" );
+                if (response.body() != null){
+                    //listOfPlace.setValue(response.body());
+                    listOfPlace = response.body().getResults();
+                    Log.d("lol response", "" + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
+                //listOfPlace.postValue(null);
+                listOfPlace = null;
+                Log.d("lol response", ""+"failure" );
+                Log.d("lol response", ""+call);
+                Log.d("lol response", ""+t );
+            }
         });
 
+        return listOfPlace;
 
     }
 }
