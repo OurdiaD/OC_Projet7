@@ -51,7 +51,7 @@
                 android:resource="@xml/searchable"/>
         </activity>
         <activity
-            android:name=".ui.DetailsActivity"
+            android:name=".ui.details.DetailsActivity"
             android:exported="true"
             android:theme="@style/Theme.Go4Lunch.NoActionBar">
 

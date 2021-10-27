@@ -50,9 +50,6 @@ public class PlaceRepository {
     public static void setCurrentLocation(Location location){
         currentLocation = location;
         currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        /*LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);*/
         Log.d("lol repo",""+location);
     }
 
@@ -67,13 +64,13 @@ public class PlaceRepository {
     public MutableLiveData<List<Result>> getListOfPlace(){
         if (listOfPlace == null){
             Log.d("lol repo68", "if null reponse");
-            requestPlace();
+            requestListOfPlace();
         }
         Log.d("lol repo71", "reponse");
         return listOfPlace;
     }
 
-    public void requestPlace()  {
+    public void requestListOfPlace()  {
         listOfPlace = new MutableLiveData<>();
         String apiKey = BuildConfig.API_KEY;
         Map<String, String> params = new HashMap<String, String>();
@@ -101,13 +98,28 @@ public class PlaceRepository {
             public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
                 //listOfPlace.postValue(null);
                 listOfPlace = null;
-                Log.d("lol response", ""+"failure" );
-                Log.d("lol response", ""+call);
-                Log.d("lol response", ""+t );
+                Log.d("lol reqplace fail", ""+t );
             }
         });
 
         //return listOfPlace;
 
+    }
+
+    public void getDetails(String placeId) {
+        MutableLiveData<Result> detailsPlace = new MutableLiveData<>();
+        Call<Root> placeDetails = mapsInterface.getDetailsPlace(placeId);
+        placeDetails.enqueue(new Callback<Root>() {
+            @Override
+            public void onResponse(Call<Root> call, Response<Root> response) {
+                Log.d("lol details ok", ""+response.body() );
+                //detailsPlace.setValue(response.body().getResults());
+            }
+
+            @Override
+            public void onFailure(Call<Root> call, Throwable t) {
+                Log.d("lol details fail", ""+t );
+            }
+        });
     }
 }

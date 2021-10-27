@@ -27,7 +27,6 @@ import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.main.MainActivity;
-import com.openclassrooms.go4lunch.ui.main.MainViewModel;
 
 import java.util.List;
 
@@ -37,7 +36,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private MapViewModel mapViewModel;
     private FragmentMapBinding binding;
     private GoogleMap mMap;
-    private MainViewModel mainViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.openclassrooms.go4lunch.databinding.FragmentListBinding;
 import com.openclassrooms.go4lunch.models.maps.Result;
-import com.openclassrooms.go4lunch.ui.main.MainViewModel;
 
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class ListFragment extends Fragment {
 
     private ListViewModel listViewModel;
     private FragmentListBinding binding;
-    private MainViewModel mainViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

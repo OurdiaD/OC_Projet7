@@ -2,6 +2,7 @@ package com.openclassrooms.go4lunch.ui.main.list;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +14,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
-import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
-import com.openclassrooms.go4lunch.ui.DetailsActivity;
-import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
+import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
 import java.util.List;
 
@@ -43,17 +43,26 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
         Result result = results.get(position);
         holder.placeName.setText(result.getName());
         holder.placeAdress.setText(result.getVicinity());
-        if (result.getOpening_hours() != null) {
-            holder.placeOpen.setText(String.valueOf(result.getOpening_hours().isOpen_now()));
+
+        if (result.getOpening_hours() == null) {
+            holder.placeOpen.setText(R.string.no_data);
+        } else if (result.getOpening_hours().open_now){
+            holder.placeOpen.setText(R.string.open_now);
+            holder.placeOpen.setTextColor(context.getResources().getColor(R.color.teal_200));
         } else {
-            holder.placeOpen.setText("null");
+            holder.placeOpen.setText(R.string.closed);
+            holder.placeOpen.setTextColor(context.getResources().getColor(R.color.orange_dark));
         }
 
-
-        /*Glide.with(context)
-                .load(result.photos.get(0))
-                .circleCrop()
+        if (result.photos != null) {
+            String reference = result.photos.get(0).photo_reference;
+            String apiKey = BuildConfig.API_KEY;
+            String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
+            /*Log.d("lol adp photo", url);
+            Glide.with(context)
+                .load(url)
                 .into(holder.placePic);*/
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

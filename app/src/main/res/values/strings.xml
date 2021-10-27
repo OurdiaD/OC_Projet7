@@ -39,5 +39,9 @@
     <string name="like">Like</string>
     <string name="website">Website</string>
 
+    <string name="open_now">Open now</string>
+    <string name="closed">Close</string>
+    <string name="no_data">no data</string>
+
 
 </resources>

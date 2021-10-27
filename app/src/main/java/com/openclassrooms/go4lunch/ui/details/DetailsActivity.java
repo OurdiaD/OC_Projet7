@@ -1,6 +1,8 @@
-package com.openclassrooms.go4lunch.ui;
+package com.openclassrooms.go4lunch.ui.details;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,12 +21,22 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+        initView();
+        binding.detailsCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("lol details", "click");
+            }
+        });
     }
 
     public void initView() {
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             String placeId = extras.getString("place_id");
+            Log.d("lol details", placeId);
         }
     }
 

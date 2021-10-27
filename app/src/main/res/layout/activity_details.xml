@@ -60,8 +60,8 @@
             android:textAllCaps="true"
             android:textStyle="bold"
             android:textColor="@color/orange"
-            android:textColorHint="@color/orange"
-            app:drawableTopCompat="@drawable/ic_call" />
+            app:drawableTopCompat="@drawable/ic_call"
+            app:drawableTint="@color/orange" />
 
         <TextView
             android:id="@+id/details_like"
@@ -71,7 +71,10 @@
             android:text="@string/like"
             android:textAlignment="center"
             android:textAllCaps="true"
-            app:drawableTopCompat="@drawable/ic_star_outline" />
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            app:drawableTopCompat="@drawable/ic_star_outline"
+            app:drawableTint="@color/orange" />
 
         <TextView
             android:id="@+id/details_website"
@@ -81,7 +84,10 @@
             android:text="@string/website"
             android:textAlignment="center"
             android:textAllCaps="true"
-            app:drawableTopCompat="@drawable/ic_website" />
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            app:drawableTopCompat="@drawable/ic_website"
+            app:drawableTint="@color/orange" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

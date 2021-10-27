@@ -22,4 +22,8 @@
     <string name="call">Appeler</string>
     <string name="like">Favoris</string>
     <string name="website">Site web</string>
+
+    <string name="open_now">Ouvert</string>
+    <string name="closed">Fermer</string>
+    <string name="no_data">Pas d\'informations</string>
 </resources>

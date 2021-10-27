@@ -44,5 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/place_name"
         app:layout_constraintTop_toTopOf="parent"
+        android:layerType="software"
+        android:scaleType="centerCrop"
         app:srcCompat="@drawable/ic_map" />
 </androidx.constraintlayout.widget.ConstraintLayout>
