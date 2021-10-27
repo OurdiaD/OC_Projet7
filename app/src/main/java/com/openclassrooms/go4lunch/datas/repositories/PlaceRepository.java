@@ -1,8 +1,6 @@
 package com.openclassrooms.go4lunch.datas.repositories;
 
-import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,7 +11,9 @@ import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.datas.MapsInterface;
 import com.openclassrooms.go4lunch.datas.RetrofitClient;
 import com.openclassrooms.go4lunch.models.maps.Result;
-import com.openclassrooms.go4lunch.models.maps.Root;
+import com.openclassrooms.go4lunch.models.maps.ResultDetails;
+import com.openclassrooms.go4lunch.models.maps.RootDetails;
+import com.openclassrooms.go4lunch.models.maps.RootList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +29,7 @@ public class PlaceRepository {
     private static LatLng currentLatLng;
     MutableLiveData<List<Result>> listOfPlace;
     MapsInterface mapsInterface;
+    String apiKey;
 
     static Location currentLocation;
     public static PlaceRepository placeRepository;
@@ -45,6 +46,7 @@ public class PlaceRepository {
     public PlaceRepository(){
         Retrofit retro = RetrofitClient.getClient("https://maps.googleapis.com/maps/");
         mapsInterface = RetrofitClient.getInterface();
+        apiKey = BuildConfig.API_KEY;
     }
 
     public static void setCurrentLocation(Location location){
@@ -72,20 +74,19 @@ public class PlaceRepository {
 
     public void requestListOfPlace()  {
         listOfPlace = new MutableLiveData<>();
-        String apiKey = BuildConfig.API_KEY;
         Map<String, String> params = new HashMap<String, String>();
         params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
         params.put("radius", "1000");
         params.put("type", "restaurant");
         //params.put("rankby", "distance");
         params.put("key", apiKey);
-        Call<Root> placesResult = mapsInterface.getAllPlaces(params);
+        Call<RootList> placesResult = mapsInterface.getAllPlaces(params);
 
         Log.d("lol repo85", ""+ placesResult.isExecuted());
         Log.d("lol repo86", ""+ placesResult.toString());
-        placesResult.enqueue(new Callback<Root>() {
+        placesResult.enqueue(new Callback<RootList>() {
             @Override
-            public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
+            public void onResponse(@NonNull Call<RootList> call, @NonNull Response<RootList> response) {
                 Log.d("lol response", "onrep" );
                 if (response.body() != null){
                     //listOfPlace.setValue(response.body());
@@ -95,7 +96,7 @@ public class PlaceRepository {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<RootList> call, @NonNull Throwable t) {
                 //listOfPlace.postValue(null);
                 listOfPlace = null;
                 Log.d("lol reqplace fail", ""+t );
@@ -106,20 +107,25 @@ public class PlaceRepository {
 
     }
 
-    public void getDetails(String placeId) {
-        MutableLiveData<Result> detailsPlace = new MutableLiveData<>();
-        Call<Root> placeDetails = mapsInterface.getDetailsPlace(placeId);
-        placeDetails.enqueue(new Callback<Root>() {
+    public MutableLiveData<ResultDetails> getDetails(String placeId) {
+        MutableLiveData<ResultDetails> detailsPlace = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("place_id", placeId);
+        params.put("key", apiKey);
+        Call<RootDetails> placeDetails = mapsInterface.getDetailsPlace(params);
+        placeDetails.enqueue(new Callback<RootDetails>() {
             @Override
-            public void onResponse(Call<Root> call, Response<Root> response) {
+            public void onResponse(@NonNull Call<RootDetails> call, @NonNull Response<RootDetails> response) {
                 Log.d("lol details ok", ""+response.body() );
-                //detailsPlace.setValue(response.body().getResults());
+                Log.d("lol details ok", ""+response.body().getResult() );
+                detailsPlace.setValue(response.body().getResult());
             }
 
             @Override
-            public void onFailure(Call<Root> call, Throwable t) {
+            public void onFailure(@NonNull Call<RootDetails> call, @NonNull Throwable t) {
                 Log.d("lol details fail", ""+t );
             }
         });
+        return detailsPlace;
     }
 }

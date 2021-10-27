@@ -1,9 +1,8 @@
 package com.openclassrooms.go4lunch.datas;
 
-import com.openclassrooms.go4lunch.models.maps.Result;
-import com.openclassrooms.go4lunch.models.maps.Root;
+import com.openclassrooms.go4lunch.models.maps.RootDetails;
+import com.openclassrooms.go4lunch.models.maps.RootList;
 
-import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -14,8 +13,8 @@ import retrofit2.http.QueryMap;
 public interface MapsInterface {
 
     @GET("api/place/nearbysearch/json")
-    Call<Root> getAllPlaces(@QueryMap Map<String, String> params);
+    Call<RootList> getAllPlaces(@QueryMap Map<String, String> params);
 
     @GET("api/place/details/json")
-    Call<Root> getDetailsPlace(@Query("place_id") String placeId);
+    Call<RootDetails> getDetailsPlace(@QueryMap Map<String, String> params);
 }

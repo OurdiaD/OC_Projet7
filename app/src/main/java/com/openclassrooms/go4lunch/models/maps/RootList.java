@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Root {
+public class RootList {
     @SerializedName("html_attributions")
     @Expose
     public List<Object> html_attributions = null;
