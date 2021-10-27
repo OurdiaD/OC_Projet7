@@ -1,4 +1,4 @@
-package com.openclassrooms.go4lunch;
+package com.openclassrooms.go4lunch.ui;
 
 import android.app.SearchManager;
 import android.content.Intent;

@@ -1,10 +1,12 @@
-package com.openclassrooms.go4lunch;
+package com.openclassrooms.go4lunch.ui.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,13 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -29,19 +33,22 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityMainBinding;
-import com.openclassrooms.go4lunch.ui.main.MainViewModel;
+import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
+import com.openclassrooms.go4lunch.ui.LoginActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private FirebaseUser user;
+    public Location loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        initApiMaps();
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
@@ -53,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         initNav();
-        initApiMaps();
+        //initApiMaps();
     }
 
     @Override
@@ -127,7 +134,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
                     PackageManager.PERMISSION_GRANTED);
+        } else {
+            //getLocation();
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    public void getLocation() {
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            /*LatLng myLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            mainViewModel.setLatLng(location);*/
+                            PlaceRepository.getInstance();
+                            PlaceRepository.setCurrentLocation(location);
+                            loc = location;
+                        }
+                    }
+                });
     }
 
 }

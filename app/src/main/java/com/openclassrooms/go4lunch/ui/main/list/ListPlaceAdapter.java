@@ -1,6 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
+import com.openclassrooms.go4lunch.ui.DetailsActivity;
 import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 
 import java.util.List;
@@ -22,7 +25,7 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
     private List<Result> results;
     private Context context;
 
-    public ListPlaceAdapter(List<Result> results){
+    public ListPlaceAdapter(){
         this.results = results;
     }
 
@@ -51,11 +54,25 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
                 .load(result.photos.get(0))
                 .circleCrop()
                 .into(holder.placePic);*/
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailsActivity.class);
+                intent.putExtra("place_id", result.getPlace_id());
+                ActivityCompat.startActivity(context, intent, null);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return results.size();
+    }
+
+    public void setResults(List<Result> results) {
+        this.results = results;
+        notifyDataSetChanged();
     }
 
     static class ListPlaceViewHolder extends RecyclerView.ViewHolder {

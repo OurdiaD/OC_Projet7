@@ -18,4 +18,8 @@
 
     <string name="fb_login">Se connecter avec Facebook</string>
     <string name="google_login">Se connecter avec Google</string>
+
+    <string name="call">Appeler</string>
+    <string name="like">Favoris</string>
+    <string name="website">Site web</string>
 </resources>

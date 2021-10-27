@@ -1,4 +1,4 @@
-package com.openclassrooms.go4lunch;
+package com.openclassrooms.go4lunch.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.openclassrooms.go4lunch.ui.main.MainActivity;
+import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityLoginBinding;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 

@@ -4,16 +4,25 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
+import com.openclassrooms.go4lunch.models.maps.Result;
+
+import java.util.List;
+
 public class ListViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private PlaceRepository repository;
 
     public ListViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is gallery fragment");
+        repository = PlaceRepository.getInstance();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public MutableLiveData<List<Result>> getListOfPlace() {
+        return repository.getListOfPlace();
+    }
+
+    public LatLng getLatLng(){
+        return repository.getLatLng();
     }
 }

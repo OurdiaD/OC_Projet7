@@ -1,11 +1,12 @@
-package com.openclassrooms.go4lunch.ui.main;
+package com.openclassrooms.go4lunch.datas.repositories;
 
+import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.go4lunch.BuildConfig;
@@ -23,69 +24,75 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainViewModel extends ViewModel {
-    LatLng currentLatLng;
-    Location currentLocation;
-    String reponsePlace;
+public class PlaceRepository {
+
+    private static LatLng currentLatLng;
+    MutableLiveData<List<Result>> listOfPlace;
     MapsInterface mapsInterface;
-    List<Result> listOfPlace;
 
-    private static MainViewModel instance;
+    static Location currentLocation;
+    public static PlaceRepository placeRepository;
 
-    public static MainViewModel getInstance() {
-        if (instance == null) {
-            synchronized (MainViewModel.class) {
-                if (instance == null) {
-                    instance = new MainViewModel();
-                }
-            }
+    public static PlaceRepository getInstance(){
+        if (placeRepository == null) {
+            placeRepository = new PlaceRepository();
+            Log.d("lol repo38", "intance null");
         }
-        return instance;
+        Log.d("lol repo40", "intance");
+        return placeRepository;
     }
 
-    public MainViewModel(){
+    public PlaceRepository(){
         Retrofit retro = RetrofitClient.getClient("https://maps.googleapis.com/maps/");
         mapsInterface = RetrofitClient.getInterface();
     }
 
-    public void setLatLng(Location location){
+    public static void setCurrentLocation(Location location){
         currentLocation = location;
-        currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+        currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        /*LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location locationGPS = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location locationNet = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);*/
+        Log.d("lol repo",""+location);
     }
 
-    public List<Result> getReponsePlace(){
+    public LatLng getLatLng(){
+        return currentLatLng;
+    }
+
+    public Location getCurrentLocation() {
+        return currentLocation;
+    }
+
+    public MutableLiveData<List<Result>> getListOfPlace(){
         if (listOfPlace == null){
-            Log.d("lol mainviewmodel", "if null");
-            listPlace();
+            Log.d("lol repo68", "if null reponse");
+            requestPlace();
         }
-        Log.d("lol mainviewmodel", "reponse");
+        Log.d("lol repo71", "reponse");
         return listOfPlace;
     }
 
-    public void listPlace()  {
+    public void requestPlace()  {
+        listOfPlace = new MutableLiveData<>();
         String apiKey = BuildConfig.API_KEY;
-        String requestUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"+
-                "location="+currentLatLng.latitude +","+currentLatLng.longitude+
-                "&radius=500&types=food&name=cruise&key="+apiKey+"/";
-        //Retrofit retro = RetrofitClient.getClient("https://maps.googleapis.com/maps/");
         Map<String, String> params = new HashMap<String, String>();
         params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
         params.put("radius", "1000");
         params.put("type", "restaurant");
         //params.put("rankby", "distance");
         params.put("key", apiKey);
-        Log.d("lol mainvm1", ""+ requestUrl);
         Call<Root> placesResult = mapsInterface.getAllPlaces(params);
 
-        Log.d("lol mainvm2", ""+ placesResult.isExecuted());
-        Log.d("lol mainvm3", ""+ placesResult.toString());
+        Log.d("lol repo85", ""+ placesResult.isExecuted());
+        Log.d("lol repo86", ""+ placesResult.toString());
         placesResult.enqueue(new Callback<Root>() {
             @Override
-            public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root>response) {
+            public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
                 Log.d("lol response", "onrep" );
                 if (response.body() != null){
                     //listOfPlace.setValue(response.body());
-                    listOfPlace = response.body().getResults();
+                    listOfPlace.setValue(response.body().getResults());
                     Log.d("lol response", "" + response.body());
                 }
             }
@@ -100,7 +107,7 @@ public class MainViewModel extends ViewModel {
             }
         });
 
-
+        //return listOfPlace;
 
     }
 }

@@ -35,5 +35,9 @@
     <string name="fb_login">Sign in with Facebook</string>
     <string name="google_login">Sign in with Google</string>
 
+    <string name="call">Call</string>
+    <string name="like">Like</string>
+    <string name="website">Website</string>
+
 
 </resources>

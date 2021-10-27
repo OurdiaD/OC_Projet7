@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Theme.Design.NoActionBar"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/details_pic"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/side_nav_bar" />
+
+    <LinearLayout
+        android:id="@+id/details_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:background="@color/orange"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_pic">
+
+        <TextView
+            android:id="@+id/details_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/details_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="TextView" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/details_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_text">
+
+        <TextView
+            android:id="@+id/details_call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/call"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="@color/orange"
+            android:textColorHint="@color/orange"
+            app:drawableTopCompat="@drawable/ic_call" />
+
+        <TextView
+            android:id="@+id/details_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/like"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            app:drawableTopCompat="@drawable/ic_star_outline" />
+
+        <TextView
+            android:id="@+id/details_website"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/website"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            app:drawableTopCompat="@drawable/ic_website" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/details_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_button"
+        tools:listitem="@layout/item_list_workmate" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/details_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:backgroundTint="#fbf2f1"
+        app:layout_constraintBottom_toBottomOf="@+id/details_pic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/details_pic"
+        app:srcCompat="@drawable/ic_check_circle" />
+</androidx.constraintlayout.widget.ConstraintLayout>
