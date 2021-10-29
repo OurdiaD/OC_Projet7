@@ -59,7 +59,7 @@ public class PlaceRepository {
         return currentLatLng;
     }
 
-    public Location getCurrentLocation() {
+    public static Location getCurrentLocation() {
         return currentLocation;
     }
 

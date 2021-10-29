@@ -1,7 +1,10 @@
 package com.openclassrooms.go4lunch.models.maps;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.openclassrooms.go4lunch.models.User;
 
 import java.util.List;
 
@@ -54,6 +57,8 @@ public class Result {
     @SerializedName("vicinity")
     @Expose
     public String vicinity;
+
+    private List<User> listUser;
 
     public String getBusiness_status() {
         return business_status;
@@ -181,5 +186,13 @@ public class Result {
 
     public void setVicinity(String vicinity) {
         this.vicinity = vicinity;
+    }
+
+    public List<User> getListUser() {
+        return listUser;
+    }
+
+    public void setListUser(List<User> listUser) {
+        this.listUser = listUser;
     }
 }

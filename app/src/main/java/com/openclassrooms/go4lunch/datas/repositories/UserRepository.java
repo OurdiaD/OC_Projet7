@@ -2,6 +2,12 @@ package com.openclassrooms.go4lunch.datas.repositories;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -9,7 +15,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.openclassrooms.go4lunch.models.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
     private static volatile UserRepository instance;
@@ -81,4 +92,26 @@ public class UserRepository {
                 .orderBy("fullname");
     }
 
+    public List<User> getUserByPlaceId(String placeId) {
+        MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();;
+        List<User> users = new ArrayList<>();
+        Query query = this.getUsersCollection().whereEqualTo("placeId", placeId);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        users.add(document.toObject(User.class));
+                    }
+                    usersLiveData.postValue(users);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                usersLiveData.postValue(null);
+            }
+        });
+        return users;
+    }
 }

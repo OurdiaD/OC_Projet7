@@ -8,10 +8,12 @@
         android:id="@+id/place_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:textStyle="bold"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/place_pic"
+        app:layout_constraintEnd_toStartOf="@+id/place_distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +24,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/place_pic"
+        app:layout_constraintEnd_toStartOf="@+id/place_person"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_name" />
 
@@ -33,7 +35,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
-        app:layout_constraintEnd_toStartOf="@+id/place_pic"
+        app:layout_constraintEnd_toStartOf="@+id/place_rating"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_address" />
 
@@ -42,9 +44,40 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/place_name"
         app:layout_constraintTop_toTopOf="parent"
         android:layerType="software"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/ic_map" />
+
+    <TextView
+        android:id="@+id/place_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/place_name"
+        app:layout_constraintEnd_toStartOf="@+id/place_pic"/>
+
+    <TextView
+        android:id="@+id/place_person"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        app:layout_constraintTop_toBottomOf="@+id/place_distance"
+        app:layout_constraintStart_toEndOf="@+id/place_address"
+        app:layout_constraintEnd_toStartOf="@+id/place_pic"
+        app:drawableStartCompat="@drawable/ic_person"
+        android:visibility="invisible"/>
+
+    <RatingBar
+        android:id="@+id/place_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/ratingBarStyleSmall"
+        android:numStars="5"
+        android:stepSize="0.2"
+        app:layout_constraintTop_toBottomOf="@+id/place_person"
+        app:layout_constraintStart_toEndOf="@+id/place_open"
+        app:layout_constraintEnd_toStartOf="@+id/place_pic"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

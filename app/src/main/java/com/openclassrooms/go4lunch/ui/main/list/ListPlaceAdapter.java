@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,8 +15,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
+import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
+import com.openclassrooms.go4lunch.models.maps.Location;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
@@ -26,7 +30,7 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
     private Context context;
 
     public ListPlaceAdapter(){
-        this.results = results;
+
     }
 
     @NonNull
@@ -64,6 +68,23 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
                 .into(holder.placePic);*/
         }
 
+        Location location = result.getGeometry().getLocation();
+        android.location.Location point = new android.location.Location("point");
+        point.setLatitude(location.getLat());
+        point.setLongitude(location.getLng());
+        float distance = point.distanceTo(PlaceRepository.getCurrentLocation());
+        String textDistance = String.format("%.0f",distance)+"m";
+        holder.placeDistance.setText(textDistance);
+
+        int countUser = result.getListUser().size();
+        if (countUser > 0) {
+            holder.placePerson.setVisibility(View.VISIBLE);
+            holder.placePerson.setText(countUser);
+        }
+
+
+        holder.placerating.setRating(result.getRating());
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +110,9 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
         private final TextView placeAdress;
         private final TextView placeOpen;
         private final ImageView placePic;
+        private final TextView placeDistance;
+        private final TextView placePerson;
+        private final RatingBar placerating;
 
         public ListPlaceViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,6 +120,9 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
             placeAdress = itemView.findViewById(R.id.place_address);
             placeOpen = itemView.findViewById(R.id.place_open);
             placePic = itemView.findViewById(R.id.place_pic);
+            placeDistance = itemView.findViewById(R.id.place_distance);
+            placePerson = itemView.findViewById(R.id.place_person);
+            placerating = itemView.findViewById(R.id.place_rating);
         }
     }
 }
