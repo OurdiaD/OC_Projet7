@@ -20,7 +20,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.openclassrooms.go4lunch.models.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserRepository {
     private static volatile UserRepository instance;
@@ -92,7 +94,7 @@ public class UserRepository {
                 .orderBy("fullname");
     }
 
-    public List<User> getUserByPlaceId(String placeId) {
+    public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
         MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();;
         List<User> users = new ArrayList<>();
         Query query = this.getUsersCollection().whereEqualTo("placeId", placeId);
@@ -112,6 +114,25 @@ public class UserRepository {
                 usersLiveData.postValue(null);
             }
         });
-        return users;
+        return usersLiveData;
+    }
+
+    public void addSelectPlace(String placeId, String name, String vicinity) {
+        FirebaseUser user = getCurrentUser();
+        String uid = user.getUid();
+        Task<DocumentSnapshot> userData = getUserData();
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("placeId", placeId);
+        data.put("placeAddress", vicinity);
+        data.put("placeName", name);
+        data.put("timestamp", ts);
+
+        userData.addOnSuccessListener(documentSnapshot -> {
+            this.getUsersCollection().document(uid).update(data);
+        });
+
     }
 }

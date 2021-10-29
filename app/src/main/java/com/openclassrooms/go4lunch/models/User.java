@@ -15,7 +15,7 @@ public class User {
     private String placeId;
     private String placeName;
     private String placeAddress;
-    private Timestamp timestamp;
+    private String timestamp;
 
     public User(String userId, String fullname, String email, @Nullable String photoUrl) {
         this.userId = userId;
@@ -90,11 +90,11 @@ public class User {
         this.placeAddress = placeAddress;
     }
 
-    public Timestamp getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 }

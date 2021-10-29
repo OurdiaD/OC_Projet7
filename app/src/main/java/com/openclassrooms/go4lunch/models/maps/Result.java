@@ -58,7 +58,7 @@ public class Result {
     @Expose
     public String vicinity;
 
-    private List<User> listUser;
+    private MutableLiveData<List<User>> listUser;
 
     public String getBusiness_status() {
         return business_status;
@@ -188,11 +188,11 @@ public class Result {
         this.vicinity = vicinity;
     }
 
-    public List<User> getListUser() {
+    public MutableLiveData<List<User>> getListUser() {
         return listUser;
     }
 
-    public void setListUser(List<User> listUser) {
+    public void setListUser(MutableLiveData<List<User>> listUser) {
         this.listUser = listUser;
     }
 }

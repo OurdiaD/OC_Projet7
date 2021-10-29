@@ -30,7 +30,7 @@ public class ListViewModel extends ViewModel {
         return placeRepository.getLatLng();
     }
 
-    public List<User> getUserByPlaceId(String placeId) {
+    public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
         return userRepository.getUserByPlaceId(placeId);
     }
 }

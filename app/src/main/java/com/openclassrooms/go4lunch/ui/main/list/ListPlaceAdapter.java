@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -19,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
+import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Location;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
@@ -76,11 +78,22 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
         String textDistance = String.format("%.0f",distance)+"m";
         holder.placeDistance.setText(textDistance);
 
-        int countUser = result.getListUser().size();
-        if (countUser > 0) {
-            holder.placePerson.setVisibility(View.VISIBLE);
-            holder.placePerson.setText(countUser);
-        }
+        result.getListUser().observeForever(new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                int countUser = users.size();
+                if (countUser > 0) {
+                    holder.placePerson.setVisibility(View.VISIBLE);
+                    holder.placePerson.setText(String.valueOf(countUser));
+                    Log.d("lol placeid", result.getName());
+                    Log.d("lol placename", result.getPlace_id());
+                    Log.d("lol userplaceid", users.get(0).getPlaceId());
+                    Log.d("lol userplacename", users.get(0).getPlaceName());
+                } else {
+                    holder.placePerson.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
 
         holder.placerating.setRating(result.getRating());

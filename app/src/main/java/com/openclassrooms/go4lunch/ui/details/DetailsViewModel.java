@@ -6,20 +6,28 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
+import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
+import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
 
 import java.util.List;
 
 public class DetailsViewModel extends ViewModel {
-    private PlaceRepository repository;
+    private final PlaceRepository placeRepository;
+    private UserRepository userRepository;
 
     public DetailsViewModel() {
-        repository = PlaceRepository.getInstance();
+        placeRepository = PlaceRepository.getInstance();
+        userRepository = UserRepository.getInstance();
     }
 
     public MutableLiveData<ResultDetails> getDetailsOfPlace(String placeId) {
-        Log.d("lol repo details", "" + repository.getDetails(placeId));
-        return repository.getDetails(placeId);
+        Log.d("lol repo details", "" + placeRepository.getDetails(placeId));
+        return placeRepository.getDetails(placeId);
+    }
+
+    public void addSelectPlace(String placeId, String name, String vicinity) {
+        userRepository.addSelectPlace(placeId, name,  vicinity);
     }
 }
