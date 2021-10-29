@@ -85,10 +85,6 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
                 if (countUser > 0) {
                     holder.placePerson.setVisibility(View.VISIBLE);
                     holder.placePerson.setText(String.valueOf(countUser));
-                    Log.d("lol placeid", result.getName());
-                    Log.d("lol placename", result.getPlace_id());
-                    Log.d("lol userplaceid", users.get(0).getPlaceId());
-                    Log.d("lol userplacename", users.get(0).getPlaceName());
                 } else {
                     holder.placePerson.setVisibility(View.INVISIBLE);
                 }

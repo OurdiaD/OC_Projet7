@@ -39,6 +39,7 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
     public void onBindViewHolder(@NonNull WorkmateAdapter.WorkmateViewHolder holder, int position) {
         User user = users.get(position);
         holder.workmateText.setText(user.getFullname());
+        Log.d("lol adapter", user.getFullname());
         Glide.with(context)
                 .load(user.getPhotoUrl())
                 .circleCrop()

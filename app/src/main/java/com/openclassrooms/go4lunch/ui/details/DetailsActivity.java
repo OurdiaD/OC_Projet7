@@ -19,8 +19,12 @@ import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityDetailsBinding;
+import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
+import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
+
+import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -73,6 +77,15 @@ public class DetailsActivity extends AppCompatActivity {
             binding.detailsSelect.setOnClickListener(setClickListener());
             binding.detailsLike.setOnClickListener(setClickListener());
             binding.detailsWebsite.setOnClickListener(setClickListener());
+
+            detailsViewModel.getUserByPlaceId(result.getPlaceId()).observe(this, new Observer<List<User>>() {
+                @Override
+                public void onChanged(List<User> users) {
+                    WorkmateAdapter workmateAdapter = new WorkmateAdapter(users);
+                    binding.detailsList.setAdapter(workmateAdapter);
+                    Log.d("lol detail activity", ""+ users);
+                }
+            });
         }
     }
 

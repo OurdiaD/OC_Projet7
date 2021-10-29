@@ -30,4 +30,8 @@ public class DetailsViewModel extends ViewModel {
     public void addSelectPlace(String placeId, String name, String vicinity) {
         userRepository.addSelectPlace(placeId, name,  vicinity);
     }
+
+    public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
+        return userRepository.getUserByPlaceId(placeId);
+    }
 }
