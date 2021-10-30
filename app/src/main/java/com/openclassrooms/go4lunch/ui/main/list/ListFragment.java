@@ -33,8 +33,6 @@ public class ListFragment extends Fragment {
         ListPlaceAdapter listPlaceAdapter = new ListPlaceAdapter();
         MutableLiveData<List<Result>> list = listViewModel.getListOfPlace();
 
-        Log.d("lol list fragment", ""+list);
-
         recyclerView.setAdapter(listPlaceAdapter);
         list.observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
             @Override

@@ -22,7 +22,6 @@ public class DetailsViewModel extends ViewModel {
     }
 
     public MutableLiveData<ResultDetails> getDetailsOfPlace(String placeId) {
-        Log.d("lol repo details", "" + placeRepository.getDetails(placeId));
         return placeRepository.getDetails(placeId);
     }
 

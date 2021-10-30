@@ -37,9 +37,7 @@ public class PlaceRepository {
     public static PlaceRepository getInstance(){
         if (placeRepository == null) {
             placeRepository = new PlaceRepository();
-            Log.d("lol repo38", "intance null");
         }
-        Log.d("lol repo40", "intance");
         return placeRepository;
     }
 
@@ -52,7 +50,6 @@ public class PlaceRepository {
     public static void setCurrentLocation(Location location){
         currentLocation = location;
         currentLatLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        Log.d("lol repo",""+location);
     }
 
     public LatLng getLatLng(){
@@ -65,10 +62,8 @@ public class PlaceRepository {
 
     public MutableLiveData<List<Result>> getListOfPlace(){
         if (listOfPlace == null){
-            Log.d("lol repo68", "if null reponse");
             requestListOfPlace();
         }
-        Log.d("lol repo71", "reponse");
         return listOfPlace;
     }
 
@@ -82,29 +77,19 @@ public class PlaceRepository {
         params.put("key", apiKey);
         Call<RootList> placesResult = mapsInterface.getAllPlaces(params);
 
-        Log.d("lol repo85", ""+ placesResult.isExecuted());
-        Log.d("lol repo86", ""+ placesResult.toString());
         placesResult.enqueue(new Callback<RootList>() {
             @Override
             public void onResponse(@NonNull Call<RootList> call, @NonNull Response<RootList> response) {
-                Log.d("lol response", "onrep" );
                 if (response.body() != null){
-                    //listOfPlace.setValue(response.body());
                     listOfPlace.setValue(response.body().getResults());
-                    Log.d("lol response", "" + response.body());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<RootList> call, @NonNull Throwable t) {
-                //listOfPlace.postValue(null);
                 listOfPlace = null;
-                Log.d("lol reqplace fail", ""+t );
             }
         });
-
-        //return listOfPlace;
-
     }
 
     public MutableLiveData<ResultDetails> getDetails(String placeId) {
@@ -116,8 +101,6 @@ public class PlaceRepository {
         placeDetails.enqueue(new Callback<RootDetails>() {
             @Override
             public void onResponse(@NonNull Call<RootDetails> call, @NonNull Response<RootDetails> response) {
-                Log.d("lol details ok", ""+response.body() );
-                Log.d("lol details ok", ""+response.body().getResult() );
                 detailsPlace.setValue(response.body().getResult());
             }
 

@@ -40,8 +40,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                              ViewGroup container, Bundle savedInstanceState) {
         mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
 
-        //mainViewModel = MainViewModel.getInstance();
-
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("mapFragment");

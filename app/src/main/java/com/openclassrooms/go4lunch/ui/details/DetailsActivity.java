@@ -47,12 +47,10 @@ public class DetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             String placeId = extras.getString("place_id");
-            Log.d("lol details", placeId);
 
             detailsViewModel.getDetailsOfPlace(placeId).observe(this, new Observer<ResultDetails>() {
                 @Override
                 public void onChanged(ResultDetails result) {
-                    Log.d("lol actidetail", ""+ result);
                     setview(result);
                 }
             });
@@ -68,10 +66,7 @@ public class DetailsActivity extends AppCompatActivity {
                 String reference = result.getPhotos().get(0).getPhoto_reference();
                 String apiKey = BuildConfig.API_KEY;
                 String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
-                Log.d("lol adp photo", url);
-                Glide.with(this)
-                        .load(url)
-                        .into(binding.detailsPic);
+                Glide.with(this).load(url).into(binding.detailsPic);
             }
             binding.detailsCall.setOnClickListener(setClickListener());
             binding.detailsSelect.setOnClickListener(setClickListener());
@@ -112,8 +107,6 @@ public class DetailsActivity extends AppCompatActivity {
                         startActivity(browserIntent);
                         break;
                 }
-
-                Log.d("lol details", "click");
             }
         };
         return listener;

@@ -62,14 +62,11 @@ public class UserRepository {
             String username = user.getDisplayName();
             String uid = user.getUid();
             String photoUrl = String.valueOf(user.getPhotoUrl());
-            Log.d("lol", photoUrl);
 
             User userToCreate = new User(uid, username, email, photoUrl);
 
             Task<DocumentSnapshot> userData = getUserData();
-            // If the user already exist in Firestore, we get his data (isMentor)
             userData.addOnSuccessListener(documentSnapshot -> {
-
                 this.getUsersCollection().document(uid).set(userToCreate);
             });
 
