@@ -1,9 +1,5 @@
 package com.openclassrooms.go4lunch.models;
 
-import android.net.Uri;
-
-import com.google.firebase.Timestamp;
-
 import org.jetbrains.annotations.Nullable;
 
 public class User {

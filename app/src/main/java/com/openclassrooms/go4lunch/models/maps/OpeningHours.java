@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 public class OpeningHours {
     @SerializedName("open_now")
     @Expose
-    public Boolean open_now;
+    private Boolean open_now;
 
-    public boolean isOpen_now() {
+    public boolean getOpen_now() {
         return open_now;
     }
 

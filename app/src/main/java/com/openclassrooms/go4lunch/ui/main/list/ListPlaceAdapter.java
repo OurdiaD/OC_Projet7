@@ -2,7 +2,6 @@ package com.openclassrooms.go4lunch.ui.main.list;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
@@ -52,7 +49,7 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
 
         if (result.getOpening_hours() == null) {
             holder.placeOpen.setText(R.string.no_data);
-        } else if (result.getOpening_hours().open_now){
+        } else if (result.getOpening_hours().getOpen_now()){
             holder.placeOpen.setText(R.string.open_now);
             holder.placeOpen.setTextColor(context.getResources().getColor(R.color.teal_200));
         } else {
@@ -60,8 +57,8 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
             holder.placeOpen.setTextColor(context.getResources().getColor(R.color.orange_dark));
         }
 
-        if (result.photos != null) {
-            String reference = result.photos.get(0).photo_reference;
+        if (result.getPhotos() != null) {
+            String reference = result.getPhotos().get(0).getPhoto_reference();
             String apiKey = BuildConfig.API_KEY;
             String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
             /*Log.d("lol adp photo", url);

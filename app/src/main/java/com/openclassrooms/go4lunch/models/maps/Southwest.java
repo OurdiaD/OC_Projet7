@@ -4,13 +4,13 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Southwest {
+
     @SerializedName("lat")
     @Expose
-    public Double lat;
+    private Double lat;
     @SerializedName("lng")
     @Expose
-    public Double lng;
-
+    private Double lng;
 
     public double getLat() {
         return lat;

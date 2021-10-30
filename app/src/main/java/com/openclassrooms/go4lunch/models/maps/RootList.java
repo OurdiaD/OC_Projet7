@@ -6,15 +6,16 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class RootList {
+
     @SerializedName("html_attributions")
     @Expose
-    public List<Object> html_attributions = null;
+    private List<Object> html_attributions = null;
     @SerializedName("results")
     @Expose
-    public List<Result> results = null;
+    private List<Result> results = null;
     @SerializedName("status")
     @Expose
-    public String status;
+    private String status;
 
     public List<Object> getHtml_attributions() {
         return html_attributions;

@@ -2,7 +2,6 @@ package com.openclassrooms.go4lunch.ui.main.map;
 
 import android.annotation.SuppressLint;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,12 +22,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.models.maps.Result;
-import com.openclassrooms.go4lunch.ui.main.MainActivity;
 
 import java.util.List;
 

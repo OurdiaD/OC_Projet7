@@ -11,52 +11,52 @@ import java.util.List;
 public class Result {
     @SerializedName("business_status")
     @Expose
-    public String business_status;
+    private String business_status;
     @SerializedName("geometry")
     @Expose
-    public Geometry geometry;
+    private Geometry geometry;
     @SerializedName("icon")
     @Expose
-    public String icon;
+    private String icon;
     @SerializedName("icon_background_color")
     @Expose
-    public String icon_background_color;
+    private String icon_background_color;
     @SerializedName("icon_mask_base_uri")
     @Expose
-    public String icon_mask_base_uri;
+    private String icon_mask_base_uri;
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
     @SerializedName("opening_hours")
     @Expose
-    public OpeningHours opening_hours;
+    private OpeningHours opening_hours;
     @SerializedName("photos")
     @Expose
-    public List<Photo> photos = null;
+    private List<Photo> photos = null;
     @SerializedName("place_id")
     @Expose
-    public String place_id;
+    private String place_id;
     @SerializedName("plus_code")
     @Expose
-    public PlusCode plus_code;
+    private PlusCode plus_code;
     @SerializedName("rating")
     @Expose
-    public Float rating;
+    private Float rating;
     @SerializedName("reference")
     @Expose
-    public String reference;
+    private String reference;
     @SerializedName("scope")
     @Expose
-    public String scope;
+    private String scope;
     @SerializedName("types")
     @Expose
-    public List<String> types = null;
+    private List<String> types = null;
     @SerializedName("user_ratings_total")
     @Expose
-    public Integer user_ratings_total;
+    private Integer user_ratings_total;
     @SerializedName("vicinity")
     @Expose
-    public String vicinity;
+    private String vicinity;
 
     private MutableLiveData<List<User>> listUser;
 

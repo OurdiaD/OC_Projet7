@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.go4lunch.databinding.FragmentListBinding;
 import com.openclassrooms.go4lunch.models.maps.Result;
 

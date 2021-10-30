@@ -8,16 +8,16 @@ import java.util.List;
 public class Photo {
     @SerializedName("height")
     @Expose
-    public Integer height;
+    private Integer height;
     @SerializedName("html_attributions")
     @Expose
-    public List<String> html_attributions;
+    private List<String> html_attributions;
     @SerializedName("photo_reference")
     @Expose
-    public String photo_reference;
+    private String photo_reference;
     @SerializedName("width")
     @Expose
-    public Integer width;
+    private Integer width;
 
     public int getHeight() {
         return height;

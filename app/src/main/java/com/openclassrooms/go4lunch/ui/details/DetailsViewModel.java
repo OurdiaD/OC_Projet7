@@ -8,14 +8,13 @@ import androidx.lifecycle.ViewModel;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.User;
-import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
 
 import java.util.List;
 
 public class DetailsViewModel extends ViewModel {
     private final PlaceRepository placeRepository;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public DetailsViewModel() {
         placeRepository = PlaceRepository.getInstance();

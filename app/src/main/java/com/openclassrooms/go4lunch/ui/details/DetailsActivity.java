@@ -65,7 +65,7 @@ public class DetailsActivity extends AppCompatActivity {
             binding.detailsName.setText(result.getName());
             binding.detailsAddress.setText(result.getVicinity());
             if (result.getPhotos() != null) {
-                String reference = result.getPhotos().get(0).photo_reference;
+                String reference = result.getPhotos().get(0).getPhoto_reference();
                 String apiKey = BuildConfig.API_KEY;
                 String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
                 Log.d("lol adp photo", url);
@@ -83,7 +83,6 @@ public class DetailsActivity extends AppCompatActivity {
                 public void onChanged(List<User> users) {
                     WorkmateAdapter workmateAdapter = new WorkmateAdapter(users);
                     binding.detailsList.setAdapter(workmateAdapter);
-                    Log.d("lol detail activity", ""+ users);
                 }
             });
         }
