@@ -42,6 +42,7 @@
     <string name="open_now">Open now</string>
     <string name="closed">Close</string>
     <string name="no_data">no data</string>
+    <string name="select">select this restaurant</string>
 
 
 </resources>

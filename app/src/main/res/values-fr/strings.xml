@@ -26,4 +26,5 @@
     <string name="open_now">Ouvert</string>
     <string name="closed">Fermer</string>
     <string name="no_data">Pas d\'informations</string>
+    <string name="select">Sélectioner ce restaurant</string>
 </resources>

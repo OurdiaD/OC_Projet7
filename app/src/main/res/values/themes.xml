@@ -64,4 +64,14 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
     </style>
+
+    <style name="detailsTheme" parent="Theme.Go4Lunch.NoActionBar">
+        <item name="colorPrimary">@color/orange</item>
+        <item name="colorPrimaryVariant">@color/orange_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">#868282</item>
+        <item name="colorOnSecondary">@color/checked</item>
+    </style>
 </resources>

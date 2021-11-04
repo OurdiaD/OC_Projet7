@@ -2,6 +2,8 @@ package com.openclassrooms.go4lunch.models;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class User {
 
     private String userId;
@@ -12,6 +14,7 @@ public class User {
     private String placeName;
     private String placeAddress;
     private String timestamp;
+    private List<String> favorite;
 
     public User(String userId, String fullname, String email, @Nullable String photoUrl) {
         this.userId = userId;
@@ -92,5 +95,13 @@ public class User {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public List<String> getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(List<String> favorite) {
+        this.favorite = favorite;
     }
 }

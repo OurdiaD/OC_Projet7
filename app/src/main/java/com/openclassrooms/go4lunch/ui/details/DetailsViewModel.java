@@ -1,7 +1,5 @@
 package com.openclassrooms.go4lunch.ui.details;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,6 +13,7 @@ import java.util.List;
 public class DetailsViewModel extends ViewModel {
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
+    User user;
 
     public DetailsViewModel() {
         placeRepository = PlaceRepository.getInstance();
@@ -31,5 +30,13 @@ public class DetailsViewModel extends ViewModel {
 
     public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
         return userRepository.getUserByPlaceId(placeId);
+    }
+
+    public MutableLiveData<User> getCurrentUser(){
+        return userRepository.getUserClass();
+    }
+
+    public void editFavPlace(String placeId) {
+        userRepository.editFavPlace(placeId);
     }
 }

@@ -54,7 +54,7 @@
         <activity
             android:name=".ui.details.DetailsActivity"
             android:exported="true"
-            android:theme="@style/Theme.Go4Lunch.NoActionBar">
+            android:theme="@style/detailsTheme">
 
         </activity>
 

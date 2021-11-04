@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/Theme.Design.NoActionBar"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
@@ -107,9 +106,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        app:backgroundTint="#fbf2f1"
         app:layout_constraintBottom_toBottomOf="@+id/details_pic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/details_pic"
-        app:srcCompat="@drawable/ic_check_circle" />
+        app:srcCompat="@drawable/ic_baseline_check_circle_outline_24"
+        android:contentDescription="@string/select" />
 </androidx.constraintlayout.widget.ConstraintLayout>

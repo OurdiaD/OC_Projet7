@@ -1,7 +1,5 @@
 package com.openclassrooms.go4lunch.datas.repositories;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -26,6 +24,9 @@ import java.util.Map;
 public class UserRepository {
     private static volatile UserRepository instance;
     private static final String COLLECTION_NAME = "users";
+    private User user;
+
+    MutableLiveData<User> userLiveData = new MutableLiveData<>();
 
     public static UserRepository getInstance() {
         UserRepository result = instance;
@@ -83,15 +84,19 @@ public class UserRepository {
         }
     }
 
-    public Query getAllUsers(){
-        return this.getUsersCollection()
-                .document()
-                .collection(COLLECTION_NAME)
-                .orderBy("fullname");
+    public MutableLiveData<User> getUserClass(){
+        getUserData().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                user = task.getResult().toObject(User.class);
+                userLiveData.postValue(user);
+            }
+        });
+        return userLiveData;
     }
 
     public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
-        MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();;
+        MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();
         List<User> users = new ArrayList<>();
         Query query = this.getUsersCollection().whereEqualTo("placeId", placeId);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -128,6 +133,31 @@ public class UserRepository {
 
         userData.addOnSuccessListener(documentSnapshot -> {
             this.getUsersCollection().document(uid).update(data);
+            getUserClass();
+        });
+    }
+
+    public void editFavPlace(String placeId){
+        getUserData().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                user = task.getResult().toObject(User.class);
+                List<String> favPlace = user.getFavorite();
+                if (favPlace == null) {
+                    favPlace = new ArrayList<>();
+                }
+                if (favPlace.contains(placeId)) {
+                    favPlace.remove(placeId);
+                } else {
+                    favPlace.add(placeId);
+                }
+                user.setFavorite(favPlace);
+                Task<DocumentSnapshot> userData = getUserData();
+                userData.addOnSuccessListener(documentSnapshot -> {
+                    getUsersCollection().document(user.getUserId()).set(user);
+                });
+                userLiveData.setValue(user);
+            }
         });
 
     }
