@@ -16,6 +16,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
@@ -24,9 +26,12 @@ import com.openclassrooms.go4lunch.databinding.ActivityDetailsBinding;
 import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
+import com.openclassrooms.go4lunch.services.Notification;
 import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -110,14 +115,11 @@ public class DetailsActivity extends AppCompatActivity {
                 switch (view.getId()) {
                     case R.id.details_select:
                         detailsViewModel.addSelectPlace(place.getPlaceId(), place.getName(), place.getVicinity());
+                        setupNotif();
                         break;
                     case R.id.details_call:
-                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(getParent(),
-                                    new String[]{Manifest.permission.CALL_PHONE},
-                                    PackageManager.PERMISSION_GRANTED);
-                        }
-                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(place.getFormattedPhoneNumber()));
+                        //permisionCall();
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + place.getFormattedPhoneNumber()));
                         startActivity(intent);
                         break;
                     case R.id.details_like:
@@ -131,5 +133,39 @@ public class DetailsActivity extends AppCompatActivity {
             }
         };
         return listener;
+    }
+
+    public void permisionCall() {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    PackageManager.PERMISSION_GRANTED);
+        }
+    }
+
+    public void setupNotif() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+
+
+        long current = System.currentTimeMillis() / 1000;
+        long date = calendar.getTimeInMillis() / 1000;
+        if (current > date){
+            date = date + 86400;
+        }
+Log.d("lol detailA", "current: "+current);
+Log.d("lol detailA", "date: "+date);
+Log.d("lol detailA", "calendar: "+calendar);
+        long l = date - current ;
+Log.d("lol detailA", "date - current: "+ l);
+
+
+        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(Notification.class, 24, TimeUnit.HOURS)
+                .setInitialDelay(100, TimeUnit.MILLISECONDS)
+                .build();
+        WorkManager.getInstance().enqueue(periodicWork);
     }
 }

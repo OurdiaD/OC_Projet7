@@ -95,6 +95,10 @@ public class UserRepository {
         return userLiveData;
     }
 
+    public Query getUserByPlaceIdQuery(String placeId) {
+        return this.getUsersCollection().whereEqualTo("placeId", placeId);
+    }
+
     public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
         MutableLiveData<List<User>> usersLiveData = new MutableLiveData<>();
         List<User> users = new ArrayList<>();
