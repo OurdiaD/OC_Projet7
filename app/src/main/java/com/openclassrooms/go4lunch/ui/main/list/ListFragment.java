@@ -25,7 +25,7 @@ public class ListFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        listViewModel = new ViewModelProvider(this).get(ListViewModel.class);
+        listViewModel = new ViewModelProvider(requireActivity()).get(ListViewModel.class);
 
         binding = FragmentListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -37,6 +37,7 @@ public class ListFragment extends Fragment {
         list.observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
             @Override
             public void onChanged(List<Result> results) {
+                Log.d("lol fraglist", ""+results);
                 for (Result result : results){
                     result.setListUser(listViewModel.getUserByPlaceId(result.getPlace_id()));
                 }

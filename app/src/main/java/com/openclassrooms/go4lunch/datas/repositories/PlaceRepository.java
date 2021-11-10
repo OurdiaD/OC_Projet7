@@ -10,11 +10,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.datas.MapsInterface;
 import com.openclassrooms.go4lunch.datas.RetrofitClient;
+import com.openclassrooms.go4lunch.models.maps.Prediction;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
+import com.openclassrooms.go4lunch.models.maps.RootAutocomplete;
 import com.openclassrooms.go4lunch.models.maps.RootDetails;
 import com.openclassrooms.go4lunch.models.maps.RootList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,5 +113,71 @@ public class PlaceRepository {
             }
         });
         return detailsPlace;
+    }
+
+    public void searchPlace(String search) {
+        //listOfPlace = new MutableLiveData<>();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("input", search);
+        params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
+        params.put("radius", "1000");
+        params.put("type", "establishment");
+        params.put("key", apiKey);
+        Log.d("lol plrepo", " searchplace");
+        Call<RootAutocomplete> placesResult = mapsInterface.searchPlaces(params);
+        placesResult.enqueue(new Callback<RootAutocomplete>() {
+            @Override
+            public void onResponse(@NonNull Call<RootAutocomplete> call, @NonNull Response<RootAutocomplete> response) {
+                Log.d("lol searchrepo", ""+response.body());
+                Log.d("lol searchrepo", ""+response.message());
+                Log.d("lol searchrepo", ""+response.toString());
+                if (response.body() != null){
+
+                    Log.d("lol searchrepo", ""+response.body());
+                    Log.d("lol searchrepo", ""+response.body().getPredictions());
+                    getListFromDetails(response.body().getPredictions());
+
+
+                    //listOfPlace.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RootAutocomplete> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getListFromDetails(List<Prediction> predictions) {
+        List<Result> listDetail = new ArrayList<>();
+        for (Prediction p : predictions){
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("place_id", p.getPlaceId());
+            params.put("key", apiKey);
+            Call<RootDetails> placeDetails = mapsInterface.getDetailsPlace(params);
+            placeDetails.enqueue(new Callback<RootDetails>() {
+                @Override
+                public void onResponse(@NonNull Call<RootDetails> call, @NonNull Response<RootDetails> response) {
+                    ResultDetails obj = response.body().getResult();
+                    Result newObj = new Result();
+                    //Result newObj = Result.class.cast(obj);
+                    newObj.setPlace_id(obj.getPlaceId());
+                    newObj.setName(obj.getName());
+                    newObj.setGeometry(obj.getGeometry());
+                    newObj.setVicinity(obj.getVicinity());
+                    newObj.setRating(obj.getRating());
+                    newObj.setPhotos(obj.getPhotos());
+                    newObj.setOpening_hours(obj.getOpeningHours());
+                    listDetail.add(newObj);
+                    listOfPlace.setValue(listDetail);
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<RootDetails> call, @NonNull Throwable t) {
+                    Log.d("lol details fail", ""+t );
+                }
+            });
+        }
     }
 }

@@ -56,7 +56,7 @@ public class ResultDetails {
     private Integer priceLevel;
     @SerializedName("rating")
     @Expose
-    private Double rating;
+    private Float rating;
     @SerializedName("reference")
     @Expose
     private String reference;
@@ -210,11 +210,11 @@ public class ResultDetails {
         this.priceLevel = priceLevel;
     }
 
-    public Double getRating() {
+    public Float getRating() {
         return rating;
     }
 
-    public void setRating(Double rating) {
+    public void setRating(Float rating) {
         this.rating = rating;
     }
 

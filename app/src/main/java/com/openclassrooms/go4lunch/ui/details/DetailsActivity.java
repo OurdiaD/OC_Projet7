@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -145,14 +146,12 @@ public class DetailsActivity extends AppCompatActivity {
 
     public void setupNotif() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 11);
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
-
-
-        long current = System.currentTimeMillis() / 1000;
-        long date = calendar.getTimeInMillis() / 1000;
+        long current = System.currentTimeMillis()/1000;
+        long date = calendar.getTimeInMillis()/1000;
         if (current > date){
             date = date + 86400;
         }
@@ -162,10 +161,11 @@ Log.d("lol detailA", "calendar: "+calendar);
         long l = date - current ;
 Log.d("lol detailA", "date - current: "+ l);
 
+WorkManager.getInstance(getApplicationContext()).cancelAllWork();
 
         PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(Notification.class, 24, TimeUnit.HOURS)
-                .setInitialDelay(100, TimeUnit.MILLISECONDS)
+                .setInitialDelay(l, TimeUnit.SECONDS)
                 .build();
-        WorkManager.getInstance().enqueue(periodicWork);
+        WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("GO4LUNCH", ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
     }
 }
