@@ -42,7 +42,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        mapViewModel = new ViewModelProvider(this).get(MapViewModel.class);
+        mapViewModel = new ViewModelProvider(requireActivity()).get(MapViewModel.class);
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -84,6 +84,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         list.observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
                             @Override
                             public void onChanged(List<Result> results) {
+                                mMap.clear();
                                 for (Result result : results) {
                                     result.setListUser(mapViewModel.getUserByPlaceId(result.getPlace_id()));
                                     LatLng position = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());

@@ -88,8 +88,10 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
             }
         });
 
+        if (result.getRating() != null ){
+            holder.placerating.setRating(result.getRating());
+        }
 
-        holder.placerating.setRating(result.getRating());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

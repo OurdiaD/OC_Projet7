@@ -31,6 +31,7 @@ public class PlaceRepository {
 
     private static LatLng currentLatLng;
     MutableLiveData<List<Result>> listOfPlace;
+    MutableLiveData<List<Result>> baseList = new MutableLiveData<>();
     MapsInterface mapsInterface;
     String apiKey;
 
@@ -74,9 +75,9 @@ public class PlaceRepository {
         listOfPlace = new MutableLiveData<>();
         Map<String, String> params = new HashMap<String, String>();
         params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
-        params.put("radius", "1000");
+        //params.put("radius", "1000");
         params.put("type", "restaurant");
-        //params.put("rankby", "distance");
+        params.put("rankby", "distance");
         params.put("key", apiKey);
         Call<RootList> placesResult = mapsInterface.getAllPlaces(params);
 
@@ -85,6 +86,7 @@ public class PlaceRepository {
             public void onResponse(@NonNull Call<RootList> call, @NonNull Response<RootList> response) {
                 if (response.body() != null){
                     listOfPlace.setValue(response.body().getResults());
+                    baseList.setValue(response.body().getResults());
                 }
             }
 
@@ -123,28 +125,19 @@ public class PlaceRepository {
         params.put("radius", "1000");
         params.put("type", "establishment");
         params.put("key", apiKey);
-        Log.d("lol plrepo", " searchplace");
+
         Call<RootAutocomplete> placesResult = mapsInterface.searchPlaces(params);
         placesResult.enqueue(new Callback<RootAutocomplete>() {
             @Override
             public void onResponse(@NonNull Call<RootAutocomplete> call, @NonNull Response<RootAutocomplete> response) {
-                Log.d("lol searchrepo", ""+response.body());
-                Log.d("lol searchrepo", ""+response.message());
-                Log.d("lol searchrepo", ""+response.toString());
                 if (response.body() != null){
-
-                    Log.d("lol searchrepo", ""+response.body());
-                    Log.d("lol searchrepo", ""+response.body().getPredictions());
                     getListFromDetails(response.body().getPredictions());
-
-
-                    //listOfPlace.setValue(response.body());
                 }
             }
 
             @Override
             public void onFailure(Call<RootAutocomplete> call, Throwable t) {
-
+                Log.d("lol details fail", ""+t );
             }
         });
     }
@@ -161,7 +154,6 @@ public class PlaceRepository {
                 public void onResponse(@NonNull Call<RootDetails> call, @NonNull Response<RootDetails> response) {
                     ResultDetails obj = response.body().getResult();
                     Result newObj = new Result();
-                    //Result newObj = Result.class.cast(obj);
                     newObj.setPlace_id(obj.getPlaceId());
                     newObj.setName(obj.getName());
                     newObj.setGeometry(obj.getGeometry());
@@ -179,5 +171,9 @@ public class PlaceRepository {
                 }
             });
         }
+    }
+
+    public void resetSearch(){
+        listOfPlace.setValue(baseList.getValue());
     }
 }

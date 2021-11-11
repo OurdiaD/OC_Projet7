@@ -37,7 +37,6 @@ public class ListFragment extends Fragment {
         list.observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
             @Override
             public void onChanged(List<Result> results) {
-                Log.d("lol fraglist", ""+results);
                 for (Result result : results){
                     result.setListUser(listViewModel.getUserByPlaceId(result.getPlace_id()));
                 }

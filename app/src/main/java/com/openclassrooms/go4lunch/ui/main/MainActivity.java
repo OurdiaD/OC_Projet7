@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_lunch){
-
+//Todo: start detailactivity placeid
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
@@ -141,9 +141,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("lol mainActivity", ""+ newText.length());
                 if (newText.length() > 2){
                     PlaceRepository.getInstance().searchPlace(newText);
+                } else {
+                    PlaceRepository.getInstance().resetSearch();
                 }
                 return false;
             }
