@@ -96,11 +96,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                                         @Override
                                         public void onChanged(List<User> users) {
                                             if (users == null || users.size() == 0) {
-                                                mMap.addMarker(new MarkerOptions().position(position).title(result.getName()));
+                                                mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()));
                                             } else {
-                                                mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                                mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                                             }
-                                            mMap.setOnMarkerClickListener(markerClickListner(result.getPlace_id()));
+                                            mMap.setOnMarkerClickListener(markerClickListner());
                                         }
                                     });
 
@@ -113,12 +113,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         });
     }
 
-    public GoogleMap.OnMarkerClickListener markerClickListner(String placeId){
+    public GoogleMap.OnMarkerClickListener markerClickListner(){
         return new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 Intent intent = new Intent(getContext(), DetailsActivity.class);
-                intent.putExtra("place_id", placeId);
+                intent.putExtra("place_id", marker.getSnippet());
                 ActivityCompat.startActivity(getContext(), intent, null);
                 return true;
             }
