@@ -1,6 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.map;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,6 +33,7 @@ import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
+import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
 import java.util.List;
 
@@ -96,6 +100,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                                             } else {
                                                 mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                                             }
+                                            mMap.setOnMarkerClickListener(markerClickListner(result.getPlace_id()));
                                         }
                                     });
 
@@ -106,5 +111,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 }
             }
         });
+    }
+
+    public GoogleMap.OnMarkerClickListener markerClickListner(String placeId){
+        return new GoogleMap.OnMarkerClickListener(){
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                Intent intent = new Intent(getContext(), DetailsActivity.class);
+                intent.putExtra("place_id", placeId);
+                ActivityCompat.startActivity(getContext(), intent, null);
+                return true;
+            }
+        };
     }
 }

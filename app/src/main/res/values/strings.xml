@@ -25,6 +25,7 @@
     <string name="workmates">Workmates</string>
     <string name="search">Search</string>
     <string name="no_decided">hasn\'t decided yet</string>
+    <string name="eating">is eating</string>
 
     <string name="error_not_connected">You have to be connected</string>
     <string name="error_authentication_canceled">Connexion caceled</string>
