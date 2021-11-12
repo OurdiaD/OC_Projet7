@@ -57,6 +57,11 @@
             android:theme="@style/detailsTheme">
 
         </activity>
+        <activity
+            android:name=".ui.PreferenceActivity"
+            android:exported="true">
+
+        </activity>
 
         <meta-data
             tools:replace="android:value"

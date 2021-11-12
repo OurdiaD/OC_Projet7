@@ -15,6 +15,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.TaskStackBuilder;
 import androidx.lifecycle.Observer;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -28,21 +31,21 @@ import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.ui.main.MainActivity;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class Notification extends Worker {
 
     public Notification(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
-        Log.d("lol notifcation","constru");
     }
 
     @NonNull
     @Override
     public Result doWork() {
         Context context = this.getApplicationContext();
-        Log.d("lol notifcation","pass");
         // Intent to start when notification is tapped
         Intent notificationIntent = new Intent(context, MainActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -117,5 +120,26 @@ public class Notification extends Worker {
                 });
             }
         });
+    }
+
+    public static void setupNotif(Context context) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        long current = System.currentTimeMillis()/1000;
+        long date = calendar.getTimeInMillis()/1000;
+        if (current > date){
+            date = date + 86400;
+        }
+        long l = date - current ;
+
+        //WorkManager.getInstance(getApplicationContext()).cancelAllWork();
+
+        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(Notification.class, 24, TimeUnit.HOURS)
+                .setInitialDelay(l, TimeUnit.SECONDS)
+                .build();
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork("GO4LUNCH", ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
     }
 }

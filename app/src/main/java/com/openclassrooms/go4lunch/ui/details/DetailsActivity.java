@@ -1,5 +1,7 @@
 package com.openclassrooms.go4lunch.ui.details;
 
+import static com.openclassrooms.go4lunch.services.Notification.setupNotif;
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -116,10 +118,9 @@ public class DetailsActivity extends AppCompatActivity {
                 switch (view.getId()) {
                     case R.id.details_select:
                         detailsViewModel.addSelectPlace(place.getPlaceId(), place.getName(), place.getVicinity());
-                        setupNotif();
+                        setupNotif(getApplicationContext());
                         break;
                     case R.id.details_call:
-                        //permisionCall();
                         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + place.getFormattedPhoneNumber()));
                         startActivity(intent);
                         break;
@@ -136,36 +137,4 @@ public class DetailsActivity extends AppCompatActivity {
         return listener;
     }
 
-    public void permisionCall() {
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    PackageManager.PERMISSION_GRANTED);
-        }
-    }
-
-    public void setupNotif() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-
-        long current = System.currentTimeMillis()/1000;
-        long date = calendar.getTimeInMillis()/1000;
-        if (current > date){
-            date = date + 86400;
-        }
-Log.d("lol detailA", "current: "+current);
-Log.d("lol detailA", "date: "+date);
-Log.d("lol detailA", "calendar: "+calendar);
-        long l = date - current ;
-Log.d("lol detailA", "date - current: "+ l);
-
-WorkManager.getInstance(getApplicationContext()).cancelAllWork();
-
-        PeriodicWorkRequest periodicWork = new PeriodicWorkRequest.Builder(Notification.class, 24, TimeUnit.HOURS)
-                .setInitialDelay(l, TimeUnit.SECONDS)
-                .build();
-        WorkManager.getInstance(getApplicationContext()).enqueueUniquePeriodicWork("GO4LUNCH", ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
-    }
 }

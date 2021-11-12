@@ -14,24 +14,34 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityMainBinding;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
+import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
+import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.ui.LoginActivity;
+import com.openclassrooms.go4lunch.ui.PreferenceActivity;
+import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
 
@@ -83,9 +93,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_lunch){
-//Todo: start detailactivity placeid
+            UserRepository.getInstance().getUserData().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    User userData = task.getResult().toObject(User.class);
+                    startDetailsActivity(userData);
+                }
+            });
         } else if (id == R.id.nav_settings) {
-
+            Intent intent = new Intent(this, PreferenceActivity.class);
+            ActivityCompat.startActivity(this, intent, null);
         } else if (id == R.id.nav_logout) {
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginActivity.class);
@@ -151,4 +168,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
     }
 
+    public void startDetailsActivity(User user){
+        Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra("place_id", user.getPlaceId());
+        ActivityCompat.startActivity(this, intent, null);
+    }
 }

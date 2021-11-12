@@ -27,4 +27,8 @@
     <string name="closed">Fermer</string>
     <string name="no_data">Pas d\'informations</string>
     <string name="select">Sélectioner ce restaurant</string>
+
+    <string name="notification">Notification</string>
+    <string name="activated">Activé</string>
+    <string name="deactivated">Desactivé</string>
 </resources>
