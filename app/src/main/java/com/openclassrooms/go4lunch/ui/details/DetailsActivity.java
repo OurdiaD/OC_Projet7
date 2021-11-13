@@ -11,18 +11,14 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityDetailsBinding;
-import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
 import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
-
-import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -46,12 +42,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (extras != null){
             String placeId = extras.getString("place_id");
 
-            detailsViewModel.getDetailsOfPlace(placeId).observe(this, new Observer<ResultDetails>() {
-                @Override
-                public void onChanged(ResultDetails result) {
-                    setview(result);
-                }
-            });
+            detailsViewModel.getDetailsOfPlace(placeId).observe(this, this::setview);
         }
     }
 
@@ -71,70 +62,44 @@ public class DetailsActivity extends AppCompatActivity {
             binding.detailsLike.setOnClickListener(setClickListener());
             binding.detailsWebsite.setOnClickListener(setClickListener());
 
-            detailsViewModel.getUserByPlaceId(result.getPlaceId()).observe(this, new Observer<List<User>>() {
-                @Override
-                public void onChanged(List<User> users) {
-                    WorkmateAdapter workmateAdapter = new WorkmateAdapter(users);
-                    binding.detailsList.setAdapter(workmateAdapter);
-                }
+            detailsViewModel.getUserByPlaceId(result.getPlaceId()).observe(this, users -> {
+                WorkmateAdapter workmateAdapter = new WorkmateAdapter(users);
+                binding.detailsList.setAdapter(workmateAdapter);
             });
 
-            detailsViewModel.getCurrentUser().observe(this, new Observer<User>() {
-                @Override
-                public void onChanged(User user) {
-                    if (user.getPlaceId().equals(result.getPlaceId())) {
-                        binding.detailsSelect.setImageResource(R.drawable.ic_check_circle);
-                    } else {
-                        binding.detailsSelect.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
-                    }
-                    Drawable top;
-                    if (user.getFavorite() != null && user.getFavorite().contains(result.getPlaceId())) {
-                        //top = getResources().getDrawable(R.drawable.ic_star_rate);
-                        top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_rate, null);
-
-                    } else {
-                        //top = getResources().getDrawable(R.drawable.ic_star_outline);
-                        top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_outline, null);
-                    }
-                    binding.detailsLike.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
+            detailsViewModel.getCurrentUser().observe(this, user -> {
+                if (user.getPlaceId().equals(result.getPlaceId())) {
+                    binding.detailsSelect.setImageResource(R.drawable.ic_check_circle);
+                } else {
+                    binding.detailsSelect.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
                 }
+                Drawable top;
+                if (user.getFavorite() != null && user.getFavorite().contains(result.getPlaceId())) {
+                    //top = getResources().getDrawable(R.drawable.ic_star_rate);
+                    top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_rate, null);
+
+                } else {
+                    //top = getResources().getDrawable(R.drawable.ic_star_outline);
+                    top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_outline, null);
+                }
+                binding.detailsLike.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
             });
         }
     }
 
     public View.OnClickListener setClickListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (view.getId() == R.id.details_select){
-                    detailsViewModel.addSelectPlace(place.getPlaceId(), place.getName(), place.getVicinity());
-                    setupNotif(getApplicationContext());
-                } else if (view.getId() == R.id.details_call) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + place.getFormattedPhoneNumber()));
-                    startActivity(intent);
-                } else if (view.getId() == R.id.details_like){
-                    detailsViewModel.editFavPlace(place.getPlaceId());
-                } else if (view.getId() == R.id.details_website){
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(place.getUrl()));
-                    startActivity(browserIntent);
-                }
-                /*switch (view.getId()) {
-                    case R.id.details_select:
-                        detailsViewModel.addSelectPlace(place.getPlaceId(), place.getName(), place.getVicinity());
-                        setupNotif(getApplicationContext());
-                        break;
-                    case R.id.details_call:
-                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + place.getFormattedPhoneNumber()));
-                        startActivity(intent);
-                        break;
-                    case R.id.details_like:
-                        detailsViewModel.editFavPlace(place.getPlaceId());
-                        break;
-                    case R.id.details_website:
-                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(place.getUrl()));
-                        startActivity(browserIntent);
-                        break;
-                }*/
+        return view -> {
+            if (view.getId() == R.id.details_select){
+                detailsViewModel.addSelectPlace(place.getPlaceId(), place.getName(), place.getVicinity());
+                setupNotif(getApplicationContext());
+            } else if (view.getId() == R.id.details_call) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + place.getFormattedPhoneNumber()));
+                startActivity(intent);
+            } else if (view.getId() == R.id.details_like){
+                detailsViewModel.editFavPlace(place.getPlaceId());
+            } else if (view.getId() == R.id.details_website){
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(place.getUrl()));
+                startActivity(browserIntent);
             }
         };
     }

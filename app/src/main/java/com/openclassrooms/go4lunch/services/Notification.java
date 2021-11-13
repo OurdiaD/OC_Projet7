@@ -19,11 +19,7 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.User;
@@ -54,14 +50,9 @@ public class Notification extends Worker {
         createNotificationChannel(context);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "my_channel")
-                //.setContentTitle("hello, world")
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setSmallIcon(R.drawable.ic_dining)
-                //.setContentText("textContent")
-                // Only on api < 26, see createNotificationChannel otherwise
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                // Default sound, vibration etc
-                // Only on api < 26, see createNotificationChannel otherwise
                 .setDefaults(DEFAULT_ALL)
                 .setContentIntent(pendingIntent);
 
@@ -92,31 +83,25 @@ public class Notification extends Worker {
     public void getData(NotificationCompat.Builder builder) {
         StringBuilder stringBuilder = new StringBuilder();
         UserRepository userRepository = UserRepository.getInstance();
-        userRepository.getUserData().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                User user = task.getResult().toObject(User.class);
-                String namePlace = Objects.requireNonNull(user).getPlaceName();
-                String addressPlace = user.getPlaceAddress();
-                builder.setContentTitle(namePlace);
-                stringBuilder.append(addressPlace).append("\n");
+        userRepository.getUserData().addOnCompleteListener(task -> {
+            User user = task.getResult().toObject(User.class);
+            String namePlace = Objects.requireNonNull(user).getPlaceName();
+            String addressPlace = user.getPlaceAddress();
+            builder.setContentTitle(namePlace);
+            stringBuilder.append(addressPlace).append("\n");
 
-                userRepository.getUserByPlaceIdQuery(user.getPlaceId()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()){
-                                User user1 = document.toObject(User.class);
-                                stringBuilder.append(user1.getFullname()).append("\n");
-                            }
-                            builder.setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText(stringBuilder));
-                        }
-                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-                        notificationManager.notify(1, builder.build());
+            userRepository.getUserByPlaceIdQuery(user.getPlaceId()).get().addOnCompleteListener(task1 -> {
+                if (task1.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task1.getResult()){
+                        User user1 = document.toObject(User.class);
+                        stringBuilder.append(user1.getFullname()).append("\n");
                     }
-                });
-            }
+                    builder.setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(stringBuilder));
+                }
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                notificationManager.notify(1, builder.build());
+            });
         });
     }
 

@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.work.WorkManager;
@@ -46,18 +45,15 @@ public class PreferenceActivity extends AppCompatActivity {
             boolean statNotif = sharedPreferences.getBoolean(PREFS_NOTIF, true);
             Objects.requireNonNull(switchNotif).setChecked(statNotif);
 
-            switchNotif.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    boolean switched = !((SwitchPreference) preference).isChecked();
-                    sharedPreferences.edit().putBoolean(PREFS_NOTIF,switched).apply();
-                    if (!switched){
-                        WorkManager.getInstance(getContext()).cancelAllWorkByTag("GO4LUNCH");
-                    } else {
-                        setupNotif(getContext());
-                    }
-                    return true;
+            switchNotif.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean switched = !((SwitchPreference) preference).isChecked();
+                sharedPreferences.edit().putBoolean(PREFS_NOTIF,switched).apply();
+                if (!switched){
+                    WorkManager.getInstance(requireContext()).cancelAllWorkByTag("GO4LUNCH");
+                } else {
+                    setupNotif(getContext());
                 }
+                return true;
             });
         }
     }

@@ -65,13 +65,10 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
     }
 
     public View.OnClickListener clickListener(String placeId){
-        return new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("place_id", placeId);
-                ActivityCompat.startActivity(context, intent, null);
-            }
+        return view -> {
+            Intent intent = new Intent(context, DetailsActivity.class);
+            intent.putExtra("place_id", placeId);
+            ActivityCompat.startActivity(context, intent, null);
         };
     }
 

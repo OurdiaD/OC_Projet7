@@ -75,16 +75,13 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
         String textDistance = String.format("%.0f",distance)+"m";
         holder.placeDistance.setText(textDistance);
 
-        result.getListUser().observeForever(new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                int countUser = users.size();
-                if (countUser > 0) {
-                    holder.placePerson.setVisibility(View.VISIBLE);
-                    holder.placePerson.setText(String.valueOf(countUser));
-                } else {
-                    holder.placePerson.setVisibility(View.INVISIBLE);
-                }
+        result.getListUser().observeForever(users -> {
+            int countUser = users.size();
+            if (countUser > 0) {
+                holder.placePerson.setVisibility(View.VISIBLE);
+                holder.placePerson.setText(String.valueOf(countUser));
+            } else {
+                holder.placePerson.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -93,13 +90,10 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
         }
 
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DetailsActivity.class);
-                intent.putExtra("place_id", result.getPlace_id());
-                ActivityCompat.startActivity(context, intent, null);
-            }
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(context, DetailsActivity.class);
+            intent.putExtra("place_id", result.getPlace_id());
+            ActivityCompat.startActivity(context, intent, null);
         });
     }
 

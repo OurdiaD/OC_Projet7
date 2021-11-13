@@ -12,7 +12,7 @@ public class RetrofitClient {
     private static final Gson gson = new GsonBuilder().setLenient().create();
     private static final OkHttpClient httpClient = new OkHttpClient.Builder().build();
 
-    public static Retrofit getClient(String baseUrl) {
+    public static void getClient(String baseUrl) {
         if (retrofit==null) {
             retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
@@ -20,7 +20,6 @@ public class RetrofitClient {
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
-        return retrofit;
     }
 
     public static MapsInterface getInterface() {

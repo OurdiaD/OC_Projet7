@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class PlaceRepository {
 
@@ -46,7 +46,7 @@ public class PlaceRepository {
     }
 
     public PlaceRepository(){
-        Retrofit retro = RetrofitClient.getClient("https://maps.googleapis.com/maps/");
+        RetrofitClient.getClient("https://maps.googleapis.com/maps/");
         mapsInterface = RetrofitClient.getInterface();
         apiKey = BuildConfig.API_KEY;
     }
@@ -73,7 +73,7 @@ public class PlaceRepository {
 
     public void requestListOfPlace()  {
         listOfPlace = new MutableLiveData<>();
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
         //params.put("radius", "1000");
         params.put("type", "restaurant");
@@ -99,14 +99,14 @@ public class PlaceRepository {
 
     public MutableLiveData<ResultDetails> getDetails(String placeId) {
         MutableLiveData<ResultDetails> detailsPlace = new MutableLiveData<>();
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("place_id", placeId);
         params.put("key", apiKey);
         Call<RootDetails> placeDetails = mapsInterface.getDetailsPlace(params);
         placeDetails.enqueue(new Callback<RootDetails>() {
             @Override
             public void onResponse(@NonNull Call<RootDetails> call, @NonNull Response<RootDetails> response) {
-                detailsPlace.setValue(response.body().getResult());
+                detailsPlace.setValue(Objects.requireNonNull(response.body()).getResult());
             }
 
             @Override
@@ -119,7 +119,7 @@ public class PlaceRepository {
 
     public void searchPlace(String search) {
         //listOfPlace = new MutableLiveData<>();
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("input", search);
         params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
         params.put("radius", "1000");
@@ -137,7 +137,7 @@ public class PlaceRepository {
             }
 
             @Override
-            public void onFailure(Call<RootAutocomplete> call, Throwable t) {
+            public void onFailure(@NonNull Call<RootAutocomplete> call, @NonNull Throwable t) {
                 Log.d("log details fail", ""+t );
             }
         });
@@ -146,14 +146,14 @@ public class PlaceRepository {
     private void getListFromDetails(List<Prediction> predictions) {
         List<Result> listDetail = new ArrayList<>();
         for (Prediction p : predictions){
-            Map<String, String> params = new HashMap<String, String>();
+            Map<String, String> params = new HashMap<>();
             params.put("place_id", p.getPlaceId());
             params.put("key", apiKey);
             Call<RootDetails> placeDetails = mapsInterface.getDetailsPlace(params);
             placeDetails.enqueue(new Callback<RootDetails>() {
                 @Override
                 public void onResponse(@NonNull Call<RootDetails> call, @NonNull Response<RootDetails> response) {
-                    ResultDetails obj = response.body().getResult();
+                    ResultDetails obj = Objects.requireNonNull(response.body()).getResult();
                     Result newObj = new Result();
                     newObj.setPlace_id(obj.getPlaceId());
                     newObj.setName(obj.getName());

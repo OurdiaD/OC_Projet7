@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,14 +32,11 @@ public class ListFragment extends Fragment {
         MutableLiveData<List<Result>> list = listViewModel.getListOfPlace();
 
         recyclerView.setAdapter(listPlaceAdapter);
-        list.observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
-            @Override
-            public void onChanged(List<Result> results) {
-                for (Result result : results){
-                    result.setListUser(listViewModel.getUserByPlaceId(result.getPlace_id()));
-                }
-                listPlaceAdapter.setResults(results);
+        list.observe(getViewLifecycleOwner(), results -> {
+            for (Result result : results){
+                result.setListUser(listViewModel.getUserByPlaceId(result.getPlace_id()));
             }
+            listPlaceAdapter.setResults(results);
         });
         return root;
     }
