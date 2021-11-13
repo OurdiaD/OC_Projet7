@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,11 +65,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
         Task<Location> locationResult = fusedLocationClient.getLastLocation();
-        locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+        locationResult.addOnCompleteListener(requireActivity(), new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
                 if (task.isSuccessful()) {
@@ -119,7 +118,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             public boolean onMarkerClick(@NonNull Marker marker) {
                 Intent intent = new Intent(getContext(), DetailsActivity.class);
                 intent.putExtra("place_id", marker.getSnippet());
-                ActivityCompat.startActivity(getContext(), intent, null);
+                ActivityCompat.startActivity(requireContext(), intent, null);
                 return true;
             }
         };

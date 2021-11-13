@@ -4,7 +4,6 @@ import static com.openclassrooms.go4lunch.services.Notification.setupNotif;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
@@ -12,16 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
-import androidx.preference.SwitchPreferenceCompat;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import com.openclassrooms.go4lunch.R;
-import com.openclassrooms.go4lunch.services.Notification;
 
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 public class PreferenceActivity extends AppCompatActivity {
 
@@ -48,9 +42,9 @@ public class PreferenceActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.preferences, rootKey);
             SwitchPreference switchNotif = findPreference("notification");
-            sharedPreferences = getContext().getSharedPreferences(PREFS, MODE_PRIVATE);
+            sharedPreferences = requireContext().getSharedPreferences(PREFS, MODE_PRIVATE);
             boolean statNotif = sharedPreferences.getBoolean(PREFS_NOTIF, true);
-            switchNotif.setChecked(statNotif);
+            Objects.requireNonNull(switchNotif).setChecked(statNotif);
 
             switchNotif.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

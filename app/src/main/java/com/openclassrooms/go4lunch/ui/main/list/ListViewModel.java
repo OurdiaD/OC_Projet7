@@ -3,7 +3,6 @@ package com.openclassrooms.go4lunch.ui.main.list;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.User;

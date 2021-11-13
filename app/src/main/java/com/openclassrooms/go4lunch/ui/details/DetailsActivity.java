@@ -2,39 +2,27 @@ package com.openclassrooms.go4lunch.ui.details;
 
 import static com.openclassrooms.go4lunch.services.Notification.setupNotif;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityDetailsBinding;
 import com.openclassrooms.go4lunch.models.User;
-import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
-import com.openclassrooms.go4lunch.services.Notification;
 import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -101,9 +89,12 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                     Drawable top;
                     if (user.getFavorite() != null && user.getFavorite().contains(result.getPlaceId())) {
-                        top = getResources().getDrawable(R.drawable.ic_star_rate);
+                        //top = getResources().getDrawable(R.drawable.ic_star_rate);
+                        top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_rate, null);
+
                     } else {
-                        top = getResources().getDrawable(R.drawable.ic_star_outline);
+                        //top = getResources().getDrawable(R.drawable.ic_star_outline);
+                        top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_outline, null);
                     }
                     binding.detailsLike.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
                 }
@@ -112,10 +103,22 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public View.OnClickListener setClickListener() {
-        View.OnClickListener listener = new View.OnClickListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (view.getId()) {
+                if (view.getId() == R.id.details_select){
+                    detailsViewModel.addSelectPlace(place.getPlaceId(), place.getName(), place.getVicinity());
+                    setupNotif(getApplicationContext());
+                } else if (view.getId() == R.id.details_call) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + place.getFormattedPhoneNumber()));
+                    startActivity(intent);
+                } else if (view.getId() == R.id.details_like){
+                    detailsViewModel.editFavPlace(place.getPlaceId());
+                } else if (view.getId() == R.id.details_website){
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(place.getUrl()));
+                    startActivity(browserIntent);
+                }
+                /*switch (view.getId()) {
                     case R.id.details_select:
                         detailsViewModel.addSelectPlace(place.getPlaceId(), place.getName(), place.getVicinity());
                         setupNotif(getApplicationContext());
@@ -131,10 +134,9 @@ public class DetailsActivity extends AppCompatActivity {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(place.getUrl()));
                         startActivity(browserIntent);
                         break;
-                }
+                }*/
             }
         };
-        return listener;
     }
 
 }

@@ -24,13 +24,11 @@ import java.util.Objects;
 
 public class WorkmatesFragment extends Fragment {
 
-    private WorkmatesViewModel workmatesViewModel;
     private FragmentWorkmatesBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        workmatesViewModel =
-                new ViewModelProvider(this).get(WorkmatesViewModel.class);
+        WorkmatesViewModel workmatesViewModel = new ViewModelProvider(this).get(WorkmatesViewModel.class);
 
         binding = FragmentWorkmatesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();

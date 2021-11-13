@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UserRepository {
     private static volatile UserRepository instance;
@@ -146,7 +147,7 @@ public class UserRepository {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 user = task.getResult().toObject(User.class);
-                List<String> favPlace = user.getFavorite();
+                List<String> favPlace = Objects.requireNonNull(user).getFavorite();
                 if (favPlace == null) {
                     favPlace = new ArrayList<>();
                 }

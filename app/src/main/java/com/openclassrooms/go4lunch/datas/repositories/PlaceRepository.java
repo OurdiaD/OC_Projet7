@@ -111,7 +111,7 @@ public class PlaceRepository {
 
             @Override
             public void onFailure(@NonNull Call<RootDetails> call, @NonNull Throwable t) {
-                Log.d("lol details fail", ""+t );
+                Log.d("log details fail", ""+t );
             }
         });
         return detailsPlace;
@@ -124,6 +124,7 @@ public class PlaceRepository {
         params.put("location", currentLatLng.latitude +","+currentLatLng.longitude);
         params.put("radius", "1000");
         params.put("type", "establishment");
+        params.put("strictbounds", "true");
         params.put("key", apiKey);
 
         Call<RootAutocomplete> placesResult = mapsInterface.searchPlaces(params);
@@ -137,7 +138,7 @@ public class PlaceRepository {
 
             @Override
             public void onFailure(Call<RootAutocomplete> call, Throwable t) {
-                Log.d("lol details fail", ""+t );
+                Log.d("log details fail", ""+t );
             }
         });
     }
@@ -167,7 +168,7 @@ public class PlaceRepository {
 
                 @Override
                 public void onFailure(@NonNull Call<RootDetails> call, @NonNull Throwable t) {
-                    Log.d("lol details fail", ""+t );
+                    Log.d("log details fail", ""+t );
                 }
             });
         }

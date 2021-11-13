@@ -8,13 +8,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.TaskStackBuilder;
-import androidx.lifecycle.Observer;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -32,7 +30,7 @@ import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.ui.main.MainActivity;
 
 import java.util.Calendar;
-import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
@@ -98,7 +96,7 @@ public class Notification extends Worker {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 User user = task.getResult().toObject(User.class);
-                String namePlace = user.getPlaceName();
+                String namePlace = Objects.requireNonNull(user).getPlaceName();
                 String addressPlace = user.getPlaceAddress();
                 builder.setContentTitle(namePlace);
                 stringBuilder.append(addressPlace).append("\n");

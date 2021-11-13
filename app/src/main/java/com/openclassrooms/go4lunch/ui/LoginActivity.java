@@ -6,18 +6,16 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.openclassrooms.go4lunch.ui.main.MainActivity;
 import com.openclassrooms.go4lunch.R;
-import com.openclassrooms.go4lunch.databinding.ActivityLoginBinding;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
-
+import com.openclassrooms.go4lunch.ui.main.MainActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
     // Show Snack Bar with a message
     private void showSnackBar(String message){
-        //Snackbar.make(getLayoutInflater(), message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_SHORT).show();
     }
 
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){

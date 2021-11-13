@@ -13,7 +13,6 @@ import java.util.List;
 public class DetailsViewModel extends ViewModel {
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
-    User user;
 
     public DetailsViewModel() {
         placeRepository = PlaceRepository.getInstance();
