@@ -3,6 +3,8 @@ package com.openclassrooms.go4lunch.ui.details;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.User;
@@ -31,8 +33,8 @@ public class DetailsViewModel extends ViewModel {
         return userRepository.getUserByPlaceId(placeId);
     }
 
-    public MutableLiveData<User> getCurrentUser(){
-        return userRepository.getUserClass();
+    public Task<DocumentSnapshot> getCurrentUser(){
+        return userRepository.getUserData();
     }
 
     public void editFavPlace(String placeId) {

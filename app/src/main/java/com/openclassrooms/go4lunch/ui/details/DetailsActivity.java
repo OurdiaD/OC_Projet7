@@ -17,8 +17,11 @@ import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityDetailsBinding;
+import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
 import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
+
+import java.util.Objects;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -41,12 +44,11 @@ public class DetailsActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             String placeId = extras.getString("place_id");
-
-            detailsViewModel.getDetailsOfPlace(placeId).observe(this, this::setview);
+            detailsViewModel.getDetailsOfPlace(placeId).observe(this, this::setDataView);
         }
     }
 
-    public void setview(ResultDetails result){
+    public void setDataView(ResultDetails result){
         if (result != null){
             place = result;
             binding.detailsName.setText(result.getName());
@@ -67,19 +69,18 @@ public class DetailsActivity extends AppCompatActivity {
                 binding.detailsList.setAdapter(workmateAdapter);
             });
 
-            detailsViewModel.getCurrentUser().observe(this, user -> {
-                if (user.getPlaceId().equals(result.getPlaceId())) {
+            detailsViewModel.getCurrentUser().addOnCompleteListener(task -> {
+                User user = task.getResult().toObject(User.class);
+                if (Objects.requireNonNull(user).getPlaceId().equals(result.getPlaceId())) {
                     binding.detailsSelect.setImageResource(R.drawable.ic_check_circle);
                 } else {
                     binding.detailsSelect.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
                 }
                 Drawable top;
                 if (user.getFavorite() != null && user.getFavorite().contains(result.getPlaceId())) {
-                    //top = getResources().getDrawable(R.drawable.ic_star_rate);
                     top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_rate, null);
 
                 } else {
-                    //top = getResources().getDrawable(R.drawable.ic_star_outline);
                     top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_outline, null);
                 }
                 binding.detailsLike.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
@@ -98,7 +99,7 @@ public class DetailsActivity extends AppCompatActivity {
             } else if (view.getId() == R.id.details_like){
                 detailsViewModel.editFavPlace(place.getPlaceId());
             } else if (view.getId() == R.id.details_website){
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(place.getUrl()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(place.getWebsite()));
                 startActivity(browserIntent);
             }
         };

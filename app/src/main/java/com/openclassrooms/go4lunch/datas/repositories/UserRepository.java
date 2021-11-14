@@ -79,14 +79,6 @@ public class UserRepository {
         }
     }
 
-    public MutableLiveData<User> getUserClass(){
-        getUserData().addOnCompleteListener(task -> {
-            user = task.getResult().toObject(User.class);
-            userLiveData.postValue(user);
-        });
-        return userLiveData;
-    }
-
     public Query getUserByPlaceIdQuery(String placeId) {
         return this.getUsersCollection().whereEqualTo("placeId", placeId);
     }
@@ -121,7 +113,7 @@ public class UserRepository {
 
         userData.addOnSuccessListener(documentSnapshot -> {
             this.getUsersCollection().document(uid).update(data);
-            getUserClass();
+            //getUserClass();
         });
     }
 

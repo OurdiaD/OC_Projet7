@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         userRepository = new UserRepository();
         initLayout();
 
@@ -39,19 +38,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     public void initLayout(){
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.FacebookBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
-
 
         AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
                 .Builder(R.layout.activity_login)
                 .setGoogleButtonId(R.id.google_login_button)
                 .setFacebookButtonId(R.id.fb_login_button)
                 .build();
-
 
         startActivityForResult(
                 AuthUI.getInstance()
@@ -77,9 +73,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleResponseAfterSignIn(int requestCode, int resultCode, Intent data){
-
         IdpResponse response = IdpResponse.fromResultIntent(data);
-
         if (requestCode == RC_SIGN_IN) {
             // SUCCESS
             if (resultCode == RESULT_OK) {
@@ -101,5 +95,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
 }
