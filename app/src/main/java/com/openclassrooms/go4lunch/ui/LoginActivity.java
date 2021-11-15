@@ -78,18 +78,18 @@ public class LoginActivity extends AppCompatActivity {
             // SUCCESS
             if (resultCode == RESULT_OK) {
                 userRepository.createUser();
-                showSnackBar(getString(R.string.connection_succeed));
+                //showSnackBar(getString(R.string.connection_succeed));
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
             } else {
                 // ERRORS
                 if (response == null) {
-                    showSnackBar(getString(R.string.error_authentication_canceled));
+                    //showSnackBar(getString(R.string.error_authentication_canceled));
                 } else if (response.getError()!= null) {
                     if(response.getError().getErrorCode() == ErrorCodes.NO_NETWORK){
-                        showSnackBar(getString(R.string.error_no_internet));
+                        //showSnackBar(getString(R.string.error_no_internet));
                     } else if (response.getError().getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                        showSnackBar(getString(R.string.error_unknown_error));
+                        //showSnackBar(getString(R.string.error_unknown_error));
                     }
                 }
             }
