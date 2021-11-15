@@ -33,8 +33,8 @@ public class DetailsViewModel extends ViewModel {
         return userRepository.getUserByPlaceId(placeId);
     }
 
-    public Task<DocumentSnapshot> getCurrentUser(){
-        return userRepository.getUserData();
+    public MutableLiveData<User> getCurrentUser(){
+        return userRepository.getUserClass();
     }
 
     public void editFavPlace(String placeId) {

@@ -69,15 +69,14 @@ public class DetailsActivity extends AppCompatActivity {
                 binding.detailsList.setAdapter(workmateAdapter);
             });
 
-            detailsViewModel.getCurrentUser().addOnCompleteListener(task -> {
-                User user = task.getResult().toObject(User.class);
-                if (Objects.requireNonNull(user).getPlaceId().equals(result.getPlaceId())) {
+            detailsViewModel.getCurrentUser().observe(this, user -> {
+                if (Objects.requireNonNull(user).getPlaceId() != null && user.getPlaceId().equals(result.getPlaceId())) {
                     binding.detailsSelect.setImageResource(R.drawable.ic_check_circle);
                 } else {
                     binding.detailsSelect.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
                 }
                 Drawable top;
-                if (user.getFavorite() != null && user.getFavorite().contains(result.getPlaceId())) {
+                if (user.getFavorite() != null && user.getFavorite() != null && user.getFavorite().contains(result.getPlaceId())) {
                     top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_rate, null);
 
                 } else {

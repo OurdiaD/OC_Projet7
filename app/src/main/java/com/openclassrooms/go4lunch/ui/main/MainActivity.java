@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_lunch){
             UserRepository.getInstance().getUserData().addOnCompleteListener(task -> {
                 User userData = task.getResult().toObject(User.class);
-                if (userData != null) {
+                if (userData != null && userData.getPlaceId() != null) {
                     startDetailsActivity(userData);
                 }
             });

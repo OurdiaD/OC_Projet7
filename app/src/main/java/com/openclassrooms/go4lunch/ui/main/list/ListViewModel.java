@@ -1,5 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.list;
 
+import android.location.Location;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -26,5 +28,8 @@ public class ListViewModel extends ViewModel {
 
     public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
         return userRepository.getUserByPlaceId(placeId);
+    }
+    public Location getLocation(){
+        return placeRepository.getCurrentLocation();
     }
 }

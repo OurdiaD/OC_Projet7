@@ -1,7 +1,9 @@
 package com.openclassrooms.go4lunch.ui.main.map;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,6 +40,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     private MapViewModel mapViewModel;
     private FragmentMapBinding binding;
     private GoogleMap mMap;
+    SupportMapFragment mapFragment;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,10 +48,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("mapFragment");
-        if (mapFragment != null) {
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("mapFragment");
+        /*if (mapFragment != null) {
             mapFragment.getMapAsync(this);
-        }
+        }*/
+        initApiMaps();
         return root;
     }
 
@@ -106,5 +110,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             ActivityCompat.startActivity(requireContext(), intent, null);
             return true;
         };
+    }
+
+    public void initApiMaps() {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},
+                    PackageManager.PERMISSION_GRANTED);
+        } else{
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(this);
+            }
+        }
     }
 }
