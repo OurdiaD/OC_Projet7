@@ -123,4 +123,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
             }
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapFragment.getMapAsync(this);
+    }
 }

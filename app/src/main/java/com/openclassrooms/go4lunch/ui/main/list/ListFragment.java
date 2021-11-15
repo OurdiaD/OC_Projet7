@@ -39,6 +39,11 @@ public class ListFragment extends Fragment {
                     .commit();
         }
 
+        getList();
+        return root;
+    }
+
+    void getList(){
         RecyclerView recyclerView = binding.listPlaces;
         ListPlaceAdapter listPlaceAdapter = new ListPlaceAdapter();
         MutableLiveData<List<Result>> list = listViewModel.getListOfPlace();
@@ -49,7 +54,12 @@ public class ListFragment extends Fragment {
             }
             listPlaceAdapter.setResults(results);
         });
-        return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getList();
     }
 
     @Override
