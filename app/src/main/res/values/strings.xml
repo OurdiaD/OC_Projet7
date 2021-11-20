@@ -48,6 +48,9 @@
     <string name="notification">Notification</string>
     <string name="activated">Activated</string>
     <string name="deactivated">Deactivated</string>
+    <string name="chat">Chat</string>
+    <string name="send">Send</string>
+    <string name="writehere">Write your message here</string>
 
 
 </resources>

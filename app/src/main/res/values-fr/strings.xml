@@ -32,4 +32,7 @@
     <string name="notification">Notification</string>
     <string name="activated">Activé</string>
     <string name="deactivated">Desactivé</string>
+    <string name="chat">Discussion</string>
+    <string name="send">Envoyé</string>
+    <string name="writehere">Ecrivez votre message ici</string>
 </resources>

@@ -37,9 +37,9 @@ public class ListFragment extends Fragment {
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, MapFragment.class, null)
                     .commit();
+        } else {
+            getList();
         }
-
-        getList();
         return root;
     }
 

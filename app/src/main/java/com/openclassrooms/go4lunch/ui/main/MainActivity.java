@@ -33,6 +33,7 @@ import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.ui.LoginActivity;
 import com.openclassrooms.go4lunch.ui.PreferenceActivity;
+import com.openclassrooms.go4lunch.ui.chat.ChatActivity;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
@@ -98,6 +99,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FirebaseAuth.getInstance().signOut();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_chat) {
+            Intent intent = new Intent(this, ChatActivity.class);
+            ActivityCompat.startActivity(this, intent, null);
         }
 
         //this.drawerLayout.closeDrawer(GravityCompat.START);

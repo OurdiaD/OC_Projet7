@@ -14,13 +14,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Location;
+import com.openclassrooms.go4lunch.models.maps.OpeningHours;
+import com.openclassrooms.go4lunch.models.maps.Photo;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -46,34 +51,16 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
         Result result = results.get(position);
         holder.placeName.setText(result.getName());
         holder.placeAdress.setText(result.getVicinity());
+        holder.placeOpen.setText(getOpeningText(result.getOpening_hours(),holder.placeOpen));
+        holder.placeDistance.setText(getDistance(result.getGeometry().getLocation()));
 
-        if (result.getOpening_hours() == null) {
-            holder.placeOpen.setText(R.string.no_data);
-        } else if (result.getOpening_hours().getOpen_now()){
-            holder.placeOpen.setText(R.string.open_now);
-            holder.placeOpen.setTextColor(context.getResources().getColor(R.color.teal_200));
-        } else {
-            holder.placeOpen.setText(R.string.closed);
-            holder.placeOpen.setTextColor(context.getResources().getColor(R.color.orange_dark));
+        if (result.getRating() != null ){
+            holder.placerating.setRating(result.getRating());
         }
 
-        if (result.getPhotos() != null) {
-            String reference = result.getPhotos().get(0).getPhoto_reference();
-            String apiKey = BuildConfig.API_KEY;
-            String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
-            /*Log.d("lol adp photo", url);
-            Glide.with(context)
-                .load(url)
-                .into(holder.placePic);*/
-        }
-
-        Location location = result.getGeometry().getLocation();
-        android.location.Location point = new android.location.Location("point");
-        point.setLatitude(location.getLat());
-        point.setLongitude(location.getLng());
-        float distance = point.distanceTo(PlaceRepository.getCurrentLocation());
-        String textDistance = String.format("%.0f",distance)+"m";
-        holder.placeDistance.setText(textDistance);
+        /*Glide.with(context)
+            .load(getPhotoUrl(result.getPhotos()))
+            .into(holder.placePic);*/
 
         result.getListUser().observeForever(users -> {
             int countUser = users.size();
@@ -84,11 +71,6 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
                 holder.placePerson.setVisibility(View.INVISIBLE);
             }
         });
-
-        if (result.getRating() != null ){
-            holder.placerating.setRating(result.getRating());
-        }
-
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, DetailsActivity.class);
@@ -105,6 +87,35 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
     public void setResults(List<Result> results) {
         this.results = results;
         notifyDataSetChanged();
+    }
+
+    public int getOpeningText(OpeningHours openingHour, @Nullable TextView view){
+        if (openingHour == null) {
+            return R.string.no_data;
+        } else if (openingHour.getOpen_now()){
+            if (view != null) view.setTextColor(context.getResources().getColor(R.color.teal_200));
+            return R.string.open_now;
+        } else {
+            if (view != null) view.setTextColor(context.getResources().getColor(R.color.orange_dark));
+            return R.string.closed;
+        }
+    }
+
+    public String getPhotoUrl(List<Photo> photos){
+        if (photos != null){
+            String reference = photos.get(0).getPhoto_reference();
+            String apiKey = BuildConfig.API_KEY;
+            return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
+        }
+        return "";
+    }
+
+    public String getDistance(Location location){
+        android.location.Location point = new android.location.Location("point");
+        point.setLatitude(location.getLat());
+        point.setLongitude(location.getLng());
+        float distance = point.distanceTo(PlaceRepository.getCurrentLocation());
+        return String.format("%.0f",distance)+"m";
     }
 
     static class ListPlaceViewHolder extends RecyclerView.ViewHolder {
