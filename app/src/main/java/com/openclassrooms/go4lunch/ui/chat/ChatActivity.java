@@ -2,9 +2,11 @@ package com.openclassrooms.go4lunch.ui.chat;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,15 +15,13 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 import com.openclassrooms.go4lunch.databinding.ActivityChatBinding;
-import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.Message;
 
-public class ChatActivity extends AppCompatActivity  implements MentorChatAdapter.Listener{
-    private MentorChatAdapter mentorChatAdapter;
+public class ChatActivity extends AppCompatActivity  implements ChatAdapter.Listener{
+    private ChatAdapter chatAdapter;
     //private String currentChatName;
     private ActivityChatBinding binding;
-    private UserRepository userRepository = UserRepository.getInstance();
-    private ChatViewModel chatViewModel = ChatViewModel.getInstance();
+    private final ChatViewModel chatViewModel = ChatViewModel.getInstance();
 
 
     @Override
@@ -30,35 +30,28 @@ public class ChatActivity extends AppCompatActivity  implements MentorChatAdapte
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         configureRecyclerView();
-        //setupListeners();
-        binding.sendButton.setOnClickListener(view -> { sendMessage(); });
+        binding.sendButton.setOnClickListener(view -> sendMessage());
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
-
-/*    private void setupListeners(){
-
-        // Chat buttons
-        binding.androidChatButton.setOnClickListener(view -> { this.configureRecyclerView(CHAT_NAME_ANDROID); });
-        binding.firebaseChatButton.setOnClickListener(view -> { this.configureRecyclerView(CHAT_NAME_FIREBASE); });
-        binding.bugChatButton.setOnClickListener(view -> { this.configureRecyclerView(CHAT_NAME_BUG); });
-    }*/
 
     // Configure RecyclerView
     private void configureRecyclerView(){
-        //Track current chat name
-        //this.currentChatName = chatName;
         //Configure Adapter & RecyclerView
-        this.mentorChatAdapter = new MentorChatAdapter(
+        this.chatAdapter = new ChatAdapter(
                 generateOptionsForAdapter(chatViewModel.getAllMessageForChat()),
                 Glide.with(this), this);
 
-        mentorChatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        chatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                binding.chatRecyclerView.smoothScrollToPosition(mentorChatAdapter.getItemCount()); // Scroll to bottom on new messages
+                binding.chatRecyclerView.smoothScrollToPosition(chatAdapter.getItemCount()); // Scroll to bottom on new messages
             }
         });
 
-        binding.chatRecyclerView.setAdapter(this.mentorChatAdapter);
+        binding.chatRecyclerView.setAdapter(this.chatAdapter);
         binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -72,7 +65,7 @@ public class ChatActivity extends AppCompatActivity  implements MentorChatAdapte
 
     public void onDataChanged() {
         // Show TextView in case RecyclerView is empty
-        binding.emptyRecyclerView.setVisibility(this.mentorChatAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        binding.emptyRecyclerView.setVisibility(this.chatAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 
     private void sendMessage(){
@@ -85,5 +78,14 @@ public class ChatActivity extends AppCompatActivity  implements MentorChatAdapte
             // Reset text field
             binding.chatEditText.setText("");
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

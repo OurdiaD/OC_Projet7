@@ -1,6 +1,5 @@
 package com.openclassrooms.go4lunch.ui.chat;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -13,7 +12,7 @@ import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
 import com.openclassrooms.go4lunch.models.Message;
 
-public class MentorChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHolder> {
+public class ChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHolder> {
 
     public interface Listener {
         void onDataChanged();
@@ -25,13 +24,12 @@ public class MentorChatAdapter extends FirestoreRecyclerAdapter<Message, Message
 
     private final RequestManager glide;
 
-    private Listener callback;
+    private final Listener callback;
 
-    public MentorChatAdapter(@NonNull FirestoreRecyclerOptions<Message> options, RequestManager glide, Listener callback) {
+    public ChatAdapter(@NonNull FirestoreRecyclerOptions<Message> options, RequestManager glide, Listener callback) {
         super(options);
         this.glide = glide;
         this.callback = callback;
-        Log.d("lol adapter", "model.getText()" );
     }
 
     @Override
@@ -47,13 +45,11 @@ public class MentorChatAdapter extends FirestoreRecyclerAdapter<Message, Message
     protected void onBindViewHolder(@NonNull MessageViewHolder holder, int position, @NonNull Message model) {
         holder.itemView.invalidate();
         holder.updateWithMessage(model, this.glide);
-        Log.d("lol adapter", model.getText() );
     }
 
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d("lol adapter", "onCreateViewHolder" );
         return new MessageViewHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_chat, parent, false), viewType == 1);
     }

@@ -61,7 +61,7 @@
                     android:textSize="13sp"
                     android:textStyle="bold"
                     tools:text="Text example"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:textColor="@color/white"/>
 
 
 

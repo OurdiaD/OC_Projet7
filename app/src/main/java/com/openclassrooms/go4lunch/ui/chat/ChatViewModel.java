@@ -5,7 +5,7 @@ import com.openclassrooms.go4lunch.datas.repositories.ChatRepository;
 
 public class ChatViewModel {
     private static volatile ChatViewModel instance;
-    private ChatRepository chatRepository;
+    private final ChatRepository chatRepository;
 
     private ChatViewModel() {
         chatRepository = ChatRepository.getInstance();

@@ -5,9 +5,10 @@ import android.location.Location;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
-import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
 
 import java.util.List;
@@ -26,10 +27,11 @@ public class ListViewModel extends ViewModel {
         return placeRepository.getListOfPlace();
     }
 
-    public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
-        return userRepository.getUserByPlaceId(placeId);
-    }
     public Location getLocation(){
         return placeRepository.getCurrentLocation();
+    }
+
+    public Task<QuerySnapshot> getUserCollection(){
+        return userRepository.getUsersCollection().get();
     }
 }

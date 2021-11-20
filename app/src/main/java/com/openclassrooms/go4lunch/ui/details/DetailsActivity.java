@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityDetailsBinding;
-import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
 import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 

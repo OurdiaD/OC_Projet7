@@ -4,9 +4,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.datas.repositories.UserRepository;
-import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public class MapViewModel extends ViewModel {
         return placeRepository.getLatLng();
     }
 
-    public MutableLiveData<List<User>> getUserByPlaceId(String placeId) {
-        return userRepository.getUserByPlaceId(placeId);
+    public Task<QuerySnapshot> getUserCollection(){
+        return userRepository.getUsersCollection().get();
     }
 
 }

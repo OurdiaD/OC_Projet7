@@ -2,6 +2,7 @@ package com.openclassrooms.go4lunch.ui.main.list;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
-import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Location;
 import com.openclassrooms.go4lunch.models.maps.OpeningHours;
 import com.openclassrooms.go4lunch.models.maps.Photo;
@@ -62,15 +60,13 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
             .load(getPhotoUrl(result.getPhotos()))
             .into(holder.placePic);*/
 
-        result.getListUser().observeForever(users -> {
-            int countUser = users.size();
-            if (countUser > 0) {
-                holder.placePerson.setVisibility(View.VISIBLE);
-                holder.placePerson.setText(String.valueOf(countUser));
-            } else {
-                holder.placePerson.setVisibility(View.INVISIBLE);
-            }
-        });
+        int countUser = result.getListUser().size();
+        if (countUser > 0) {
+            holder.placePerson.setVisibility(View.VISIBLE);
+            holder.placePerson.setText(String.valueOf(countUser));
+        } else {
+            holder.placePerson.setVisibility(View.INVISIBLE);
+        }
 
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(context, DetailsActivity.class);
@@ -85,6 +81,7 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
     }
 
     public void setResults(List<Result> results) {
+        Log.d("lol", "adapter set");
         this.results = results;
         notifyDataSetChanged();
     }

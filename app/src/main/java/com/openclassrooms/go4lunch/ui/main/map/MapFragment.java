@@ -27,11 +27,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
+import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -81,14 +85,24 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(myPosition));
 
                     MutableLiveData<List<Result>> list = mapViewModel.getListOfPlace();
+                    Task<QuerySnapshot> listUser = mapViewModel.getUserCollection();
 
                     list.observe(getViewLifecycleOwner(), results -> {
                         mMap.clear();
                         for (Result result : results) {
-                            result.setListUser(mapViewModel.getUserByPlaceId(result.getPlace_id()));
-                            LatLng position = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
-                            result.getListUser().observe(getViewLifecycleOwner(), users -> {
-                                if (users == null || users.size() == 0) {
+                            List<User> usersList = new ArrayList<>();
+                            listUser.addOnCompleteListener(taskUser -> {
+                                for (QueryDocumentSnapshot document : taskUser.getResult()){
+                                    User user = document.toObject(User.class);
+                                    if (result.getPlace_id().equals(user.getPlaceId())){
+                                        usersList.add(user);
+                                    }
+                                    result.setListUser(usersList);
+                                }
+
+                                LatLng position = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
+
+                                if (result.getListUser() == null || result.getListUser().size() == 0) {
                                     mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()));
                                 } else {
                                     mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));

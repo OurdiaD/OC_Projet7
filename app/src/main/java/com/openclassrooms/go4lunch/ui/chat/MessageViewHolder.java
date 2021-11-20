@@ -1,7 +1,6 @@
 package com.openclassrooms.go4lunch.ui.chat;
 
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -24,25 +23,23 @@ import java.util.Locale;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
 
-    private ItemChatBinding binding;
+    private final ItemChatBinding binding;
 
     private final int colorCurrentUser;
     private final int colorRemoteUser;
 
-    private boolean isSender;
+    private final boolean isSender;
 
     public MessageViewHolder(@NonNull View itemView, boolean isSender) {
         super(itemView);
         this.isSender = isSender;
         binding = ItemChatBinding.bind(itemView);
-        Log.d("lol viewholder", "message.getText()" );
         // Setup default colros
-        colorCurrentUser = ContextCompat.getColor(itemView.getContext(), R.color.colorAccent);
-        colorRemoteUser = ContextCompat.getColor(itemView.getContext(), R.color.colorPrimary);
+        colorCurrentUser = ContextCompat.getColor(itemView.getContext(), R.color.grey);
+        colorRemoteUser = ContextCompat.getColor(itemView.getContext(), R.color.orange);
     }
 
     public void updateWithMessage(Message message, RequestManager glide){
-        Log.d("lol viewholder", message.getText() );
         // Update message
         binding.messageTextView.setText(message.getText());
         binding.messageTextView.setTextAlignment(isSender ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START);
@@ -50,30 +47,16 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         // Update date
         if (message.getDateCreated() != null) binding.dateTextView.setText(this.convertDateToHour(message.getDateCreated()));
 
-        // Update isMentor
-        //binding.profileIsMentor.setVisibility(message.getUser().getIsMentor() ? View.VISIBLE : View.INVISIBLE);
-
         // Update profile picture
         if (message.getUser().getPhotoUrl() != null)
             glide.load(message.getUser().getPhotoUrl())
                     .apply(RequestOptions.circleCropTransform())
                     .into(binding.profileImage);
 
-        // Update image sent
-    /*    if (message.getUrlImage() != null){
-            glide.load(message.getUrlImage())
-                    .into(binding.senderImageView);
-            binding.senderImageView.setVisibility(View.VISIBLE);
-        } else {
-            binding.senderImageView.setVisibility(View.GONE);
-        }*/
-
         updateLayoutFromSenderType();
     }
 
     private void updateLayoutFromSenderType(){
-
-        //Update Message Bubble Color Background
         ((GradientDrawable) binding.messageTextContainer.getBackground()).setColor(isSender ? colorCurrentUser : colorRemoteUser);
         binding.messageTextContainer.requestLayout();
 
