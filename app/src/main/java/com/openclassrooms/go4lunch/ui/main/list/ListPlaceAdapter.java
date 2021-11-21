@@ -81,7 +81,6 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
     }
 
     public void setResults(List<Result> results) {
-        Log.d("lol", "adapter set");
         this.results = results;
         notifyDataSetChanged();
     }

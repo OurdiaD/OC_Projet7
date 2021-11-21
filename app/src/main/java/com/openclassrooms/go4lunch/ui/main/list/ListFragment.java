@@ -48,15 +48,12 @@ public class ListFragment extends Fragment {
     }
 
     void getList(){
-        Log.d("lol", "getlist");
         RecyclerView recyclerView = binding.listPlaces;
         ListPlaceAdapter listPlaceAdapter = new ListPlaceAdapter();
         MutableLiveData<List<Result>> list = listViewModel.getListOfPlace();
         Task<QuerySnapshot> listUser = listViewModel.getUserCollection();
         recyclerView.setAdapter(listPlaceAdapter);
         list.observe(getViewLifecycleOwner(), results -> {
-
-            Log.d("lol", "observe");
             for (Result result : results){
                 List<User> usersList = new ArrayList<>();
                 listUser.addOnCompleteListener(taskUser -> {

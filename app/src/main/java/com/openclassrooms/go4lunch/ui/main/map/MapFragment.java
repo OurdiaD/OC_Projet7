@@ -53,9 +53,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         binding = FragmentMapBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("mapFragment");
-        /*if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-        }*/
         initApiMaps();
         return root;
     }
