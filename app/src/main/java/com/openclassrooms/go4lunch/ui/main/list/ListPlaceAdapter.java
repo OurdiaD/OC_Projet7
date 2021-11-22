@@ -1,8 +1,9 @@
 package com.openclassrooms.go4lunch.ui.main.list;
 
+import static com.openclassrooms.go4lunch.services.PlaceUtils.getPhotoUrl;
+
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.openclassrooms.go4lunch.BuildConfig;
+import com.bumptech.glide.Glide;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
 import com.openclassrooms.go4lunch.models.maps.Location;
 import com.openclassrooms.go4lunch.models.maps.OpeningHours;
-import com.openclassrooms.go4lunch.models.maps.Photo;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
@@ -95,15 +95,6 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
             if (view != null) view.setTextColor(context.getResources().getColor(R.color.orange_dark));
             return R.string.closed;
         }
-    }
-
-    public String getPhotoUrl(List<Photo> photos){
-        if (photos != null){
-            String reference = photos.get(0).getPhoto_reference();
-            String apiKey = BuildConfig.API_KEY;
-            return "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
-        }
-        return "";
     }
 
     public String getDistance(Location location){

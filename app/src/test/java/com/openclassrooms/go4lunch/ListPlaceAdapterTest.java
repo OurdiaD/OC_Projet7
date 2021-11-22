@@ -1,5 +1,6 @@
 package com.openclassrooms.go4lunch;
 
+import static com.openclassrooms.go4lunch.services.PlaceUtils.getPhotoUrl;
 import static org.junit.Assert.assertEquals;
 
 import com.openclassrooms.go4lunch.models.maps.Geometry;
@@ -48,11 +49,11 @@ public class ListPlaceAdapterTest {
         String apiKey = BuildConfig.API_KEY;
         String check = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
 
-        String value = listPlaceAdapter.getPhotoUrl(place.getPhotos());
+        String value = getPhotoUrl(place.getPhotos());
         assertEquals(check,value);
 
         place.setPhotos(null);
-        value = listPlaceAdapter.getPhotoUrl(place.getPhotos());
+        value = getPhotoUrl(place.getPhotos());
         assertEquals("",value);
     }
 

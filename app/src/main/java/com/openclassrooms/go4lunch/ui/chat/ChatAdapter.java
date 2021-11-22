@@ -36,9 +36,11 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHo
     public int getItemViewType(int position) {
         // Determine the type of the message by if the user is the sender or not
         String currentUserId = UserRepository.getInstance().getCurrentUser().getUid();
-        boolean isSender = getItem(position).getUser().getUserId().equals(currentUserId);
+        String itemId = getItem(position).getUser().getUserId();
+        /*boolean isSender = getItem(position).getUser().getUserId().equals(currentUserId);
 
-        return (isSender) ? SENDER_TYPE : RECEIVER_TYPE;
+        return (isSender) ? SENDER_TYPE : RECEIVER_TYPE;*/
+        return isSender(currentUserId, itemId);
     }
 
     @Override
@@ -58,5 +60,12 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHo
     public void onDataChanged() {
         super.onDataChanged();
         this.callback.onDataChanged();
+    }
+
+    public static int isSender(String currentId, String itemId){
+        if (itemId.equals(currentId))
+            return SENDER_TYPE;
+        else
+            return RECEIVER_TYPE;
     }
 }

@@ -1,6 +1,7 @@
 package com.openclassrooms.go4lunch.ui.details;
 
 import static com.openclassrooms.go4lunch.services.Notification.setupNotif;
+import static com.openclassrooms.go4lunch.services.PlaceUtils.getPhotoUrl;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -14,13 +15,12 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.openclassrooms.go4lunch.BuildConfig;
 import com.openclassrooms.go4lunch.R;
 import com.openclassrooms.go4lunch.databinding.ActivityDetailsBinding;
 import com.openclassrooms.go4lunch.models.maps.ResultDetails;
 import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 
-import java.util.Objects;
+import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -52,12 +52,9 @@ public class DetailsActivity extends AppCompatActivity {
             place = result;
             binding.detailsName.setText(result.getName());
             binding.detailsAddress.setText(result.getVicinity());
-            if (result.getPhotos() != null) {
-                String reference = result.getPhotos().get(0).getPhoto_reference();
-                String apiKey = BuildConfig.API_KEY;
-                String url = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference="+reference+"&key="+apiKey;
-                Glide.with(this).load(url).into(binding.detailsPic);
-            }
+
+            Glide.with(this).load(getPhotoUrl(result.getPhotos())).into(binding.detailsPic);
+
             binding.detailsCall.setOnClickListener(setClickListener());
             binding.detailsSelect.setOnClickListener(setClickListener());
             binding.detailsLike.setOnClickListener(setClickListener());
@@ -69,18 +66,8 @@ public class DetailsActivity extends AppCompatActivity {
             });
 
             detailsViewModel.getCurrentUser().observe(this, user -> {
-                if (Objects.requireNonNull(user).getPlaceId() != null && user.getPlaceId().equals(result.getPlaceId())) {
-                    binding.detailsSelect.setImageResource(R.drawable.ic_check_circle);
-                } else {
-                    binding.detailsSelect.setImageResource(R.drawable.ic_baseline_check_circle_outline_24);
-                }
-                Drawable top;
-                if (user.getFavorite() != null && user.getFavorite() != null && user.getFavorite().contains(result.getPlaceId())) {
-                    top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_rate, null);
-
-                } else {
-                    top = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_star_outline, null);
-                }
+                binding.detailsSelect.setImageResource(getCheckDrawable(user.getPlaceId(), result.getPlaceId()));
+                Drawable top = ResourcesCompat.getDrawable(getResources(), getFavStar(user.getFavorite(), result.getPlaceId()), null);
                 binding.detailsLike.setCompoundDrawablesWithIntrinsicBounds(null, top , null, null);
             });
         }
@@ -101,6 +88,23 @@ public class DetailsActivity extends AppCompatActivity {
                 startActivity(browserIntent);
             }
         };
+    }
+
+    public static int getFavStar(List<String> list, String placeId) {
+        if (list != null && list.contains(placeId)) {
+            return R.drawable.ic_star_rate;
+
+        } else {
+            return R.drawable.ic_star_outline;
+        }
+    }
+
+    public static int getCheckDrawable(String userPlace, String curentPlace) {
+        if (userPlace != null && userPlace.equals(curentPlace)) {
+            return R.drawable.ic_check_circle;
+        } else {
+            return R.drawable.ic_baseline_check_circle_outline_24;
+        }
     }
 
 }

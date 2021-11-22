@@ -95,8 +95,8 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-    private String convertDateToHour(Date date){
-        DateFormat dfTime = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    public static String convertDateToHour(Date date){
+        DateFormat dfTime = new SimpleDateFormat("dd/MM HH:mm", Locale.getDefault());
         return dfTime.format(date);
     }
 

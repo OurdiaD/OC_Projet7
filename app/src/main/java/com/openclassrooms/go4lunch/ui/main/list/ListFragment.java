@@ -1,5 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.list;
 
+import static com.openclassrooms.go4lunch.services.PlaceUtils.getResultWithUser;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,9 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.Task;
@@ -37,10 +43,7 @@ public class ListFragment extends Fragment {
         View root = binding.getRoot();
 
         if(listViewModel.getLocation() == null){
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment_content_main, new MapFragment())
-                    .commit();
+            NavHostFragment.findNavController(this).navigate(R.id.navigation_map);
         } else {
             getList();
         }
@@ -57,15 +60,18 @@ public class ListFragment extends Fragment {
             for (Result result : results){
                 List<User> usersList = new ArrayList<>();
                 listUser.addOnCompleteListener(taskUser -> {
-                    for (QueryDocumentSnapshot document : taskUser.getResult()){
+                    /*for (QueryDocumentSnapshot document : taskUser.getResult()){
                         User user = document.toObject(User.class);
                         if (result.getPlace_id().equals(user.getPlaceId())){
                             usersList.add(user);
                         }
                         result.setListUser(usersList);
                         listPlaceAdapter.notifyDataSetChanged();
-                    }
+                    }*/
+                    getResultWithUser(taskUser, result);
+                    listPlaceAdapter.notifyDataSetChanged();
                 });
+
             }
             listPlaceAdapter.setResults(results);
         });

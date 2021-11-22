@@ -1,5 +1,7 @@
 package com.openclassrooms.go4lunch.ui.main.map;
 
+import static com.openclassrooms.go4lunch.services.PlaceUtils.getResultWithUser;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -89,13 +91,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                         for (Result result : results) {
                             List<User> usersList = new ArrayList<>();
                             listUser.addOnCompleteListener(taskUser -> {
-                                for (QueryDocumentSnapshot document : taskUser.getResult()){
+                                /*for (QueryDocumentSnapshot document : taskUser.getResult()){
                                     User user = document.toObject(User.class);
                                     if (result.getPlace_id().equals(user.getPlaceId())){
                                         usersList.add(user);
                                     }
                                     result.setListUser(usersList);
-                                }
+                                }*/
+                                getResultWithUser(taskUser, result);
 
                                 LatLng position = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
 
