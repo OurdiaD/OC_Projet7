@@ -1,12 +1,14 @@
 package com.openclassrooms.go4lunch.services;
 
 import static android.app.Notification.DEFAULT_ALL;
+import static android.content.Context.MODE_PRIVATE;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
@@ -70,7 +72,7 @@ public class Notification extends Worker {
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("my_channel", "MyApp notifications", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("They will wake you up in the night");
+            channel.setDescription("Your lunch");
             channel.enableVibration(true);
 
             // Register the channel with the system; you can't change the importance
@@ -106,6 +108,13 @@ public class Notification extends Worker {
     }
 
     public static void setupNotif(Context context) {
+        String PREFS = "PREFS_GO4LUNCH";
+        String PREFS_NOTIF = "PREFS_NOTIF";
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS, MODE_PRIVATE);
+        boolean statNotif = sharedPreferences.getBoolean(PREFS_NOTIF, true);
+
+        if (!statNotif) return;
+
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, 12);
         calendar.set(Calendar.MINUTE, 0);

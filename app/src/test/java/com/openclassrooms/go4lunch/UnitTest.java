@@ -7,6 +7,7 @@ import android.util.Log;
 import com.openclassrooms.go4lunch.ui.chat.ChatAdapter;
 import com.openclassrooms.go4lunch.ui.chat.MessageViewHolder;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
+import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 
 import org.junit.Test;
 
@@ -62,5 +63,14 @@ public class UnitTest {
         assertEquals(R.drawable.ic_baseline_check_circle_outline_24, value);
         value = DetailsActivity.getCheckDrawable(currentId,currentId);
         assertEquals(R.drawable.ic_check_circle, value);
+    }
+
+    @Test
+    public void getTextWorkmateTest(){
+        WorkmateAdapter adapter = new WorkmateAdapter(new ArrayList<>());
+        String value = adapter.generateWorkmateText("user", "place name");
+        assertEquals("user is eating place name", value);
+        value = adapter.generateWorkmateText("user", null);
+        assertEquals("user hasn't decided yet", value);
     }
 }

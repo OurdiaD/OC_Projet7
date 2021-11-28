@@ -83,47 +83,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                             .target(currentLatLng).zoom(17).bearing(90).tilt(30).build();
                     mMap.moveCamera(CameraUpdateFactory.newCameraPosition(myPosition));
 
-                    MutableLiveData<List<Result>> list = mapViewModel.getListOfPlace();
-                    Task<QuerySnapshot> listUser = mapViewModel.getUserCollection();
-
-                    list.observe(getViewLifecycleOwner(), results -> {
-                        mMap.clear();
-                        for (Result result : results) {
-                            List<User> usersList = new ArrayList<>();
-                            listUser.addOnCompleteListener(taskUser -> {
-                                /*for (QueryDocumentSnapshot document : taskUser.getResult()){
-                                    User user = document.toObject(User.class);
-                                    if (result.getPlace_id().equals(user.getPlaceId())){
-                                        usersList.add(user);
-                                    }
-                                    result.setListUser(usersList);
-                                }*/
-                                getResultWithUser(taskUser, result);
-
-                                LatLng position = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
-
-                                if (result.getListUser() == null || result.getListUser().size() == 0) {
-                                    mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()));
-                                } else {
-                                    mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-                                }
-                                mMap.setOnMarkerClickListener(markerClickListner());
-                            });
-
-                        }
-                    });
+                    addMarkers();
                 }
             }
         });
-    }
-
-    public GoogleMap.OnMarkerClickListener markerClickListner(){
-        return marker -> {
-            Intent intent = new Intent(getContext(), DetailsActivity.class);
-            intent.putExtra("place_id", marker.getSnippet());
-            ActivityCompat.startActivity(requireContext(), intent, null);
-            return true;
-        };
     }
 
     public void initApiMaps() {
@@ -143,4 +106,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         super.onResume();
         mapFragment.getMapAsync(this);
     }
+
+    public void addMarkers() {
+        MutableLiveData<List<Result>> list = mapViewModel.getListOfPlace();
+        Task<QuerySnapshot> listUser = mapViewModel.getUserCollection();
+
+        list.observe(getViewLifecycleOwner(), results -> {
+            mMap.clear();
+            for (Result result : results) {
+                listUser.addOnCompleteListener(taskUser -> {
+                    getResultWithUser(taskUser, result);
+
+                    LatLng position = new LatLng(result.getGeometry().getLocation().getLat(), result.getGeometry().getLocation().getLng());
+                    if (result.getListUser() == null || result.getListUser().size() == 0) {
+                        mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()));
+                    } else {
+                        mMap.addMarker(new MarkerOptions().position(position).title(result.getName()).snippet(result.getPlace_id()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    }
+                    mMap.setOnMarkerClickListener(markerClickListner());
+                });
+
+            }
+        });
+    }
+
+    public GoogleMap.OnMarkerClickListener markerClickListner(){
+        return marker -> {
+            Intent intent = new Intent(getContext(), DetailsActivity.class);
+            intent.putExtra("place_id", marker.getSnippet());
+            ActivityCompat.startActivity(requireContext(), intent, null);
+            return true;
+        };
+    }
+
 }

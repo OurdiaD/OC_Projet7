@@ -42,17 +42,17 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
         User user = users.get(position);
         String text = user.getFullname();
         if (user.getPlaceName() != null){
-            text = text + " " +
+            /*text = text + " " +
                     context.getResources().getString(R.string.eating) + " " +
-                    user.getPlaceName();
+                    user.getPlaceName();*/
             holder.workmateText.setTypeface(Typeface.DEFAULT_BOLD);
             holder.itemView.setOnClickListener(clickListener(user.getPlaceId()));
         } else {
-            text = text + " " + context.getResources().getString(R.string.no_decided);
+            //text = text + " " + context.getResources().getString(R.string.no_decided);
             holder.workmateText.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
             holder.workmateText.setTextColor(context.getResources().getColor(R.color.grey));
         }
-        holder.workmateText.setText(text);
+        holder.workmateText.setText(generateWorkmateText(text, user.getPlaceName()));
         Glide.with(context)
                 .load(user.getPhotoUrl())
                 .circleCrop()
@@ -70,6 +70,16 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
             intent.putExtra("place_id", placeId);
             ActivityCompat.startActivity(context, intent, null);
         };
+    }
+
+    public String generateWorkmateText(String name, String placeName) {
+        if (placeName != null){
+            return name + " " +
+                    context.getResources().getString(R.string.eating) + " " +
+                    placeName;
+        } else {
+            return name + " " + context.getResources().getString(R.string.no_decided);
+        }
     }
 
     static class WorkmateViewHolder extends RecyclerView.ViewHolder {
