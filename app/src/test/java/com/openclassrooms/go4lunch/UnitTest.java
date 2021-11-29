@@ -65,12 +65,5 @@ public class UnitTest {
         assertEquals(R.drawable.ic_check_circle, value);
     }
 
-    @Test
-    public void getTextWorkmateTest(){
-        WorkmateAdapter adapter = new WorkmateAdapter(new ArrayList<>());
-        String value = adapter.generateWorkmateText("user", "place name");
-        assertEquals("user is eating place name", value);
-        value = adapter.generateWorkmateText("user", null);
-        assertEquals("user hasn't decided yet", value);
-    }
+
 }

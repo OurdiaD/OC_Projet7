@@ -52,7 +52,7 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
             holder.workmateText.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
             holder.workmateText.setTextColor(context.getResources().getColor(R.color.grey));
         }
-        holder.workmateText.setText(generateWorkmateText(text, user.getPlaceName()));
+        holder.workmateText.setText(generateWorkmateText(text, user.getPlaceName(), context));
         Glide.with(context)
                 .load(user.getPhotoUrl())
                 .circleCrop()
@@ -72,7 +72,7 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
         };
     }
 
-    public String generateWorkmateText(String name, String placeName) {
+    public String generateWorkmateText(String name, String placeName, Context context) {
         if (placeName != null){
             return name + " " +
                     context.getResources().getString(R.string.eating) + " " +

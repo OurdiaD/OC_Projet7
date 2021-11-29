@@ -108,10 +108,7 @@ public class Notification extends Worker {
     }
 
     public static void setupNotif(Context context) {
-        String PREFS = "PREFS_GO4LUNCH";
-        String PREFS_NOTIF = "PREFS_NOTIF";
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS, MODE_PRIVATE);
-        boolean statNotif = sharedPreferences.getBoolean(PREFS_NOTIF, true);
+        boolean statNotif = isStatNotif(context);
 
         if (!statNotif) return;
 
@@ -133,5 +130,12 @@ public class Notification extends Worker {
                 .setInitialDelay(l, TimeUnit.SECONDS)
                 .build();
         WorkManager.getInstance(context).enqueueUniquePeriodicWork("GO4LUNCH", ExistingPeriodicWorkPolicy.REPLACE, periodicWork);
+    }
+
+    public static boolean isStatNotif(Context context) {
+        String PREFS = "PREFS_GO4LUNCH";
+        String PREFS_NOTIF = "PREFS_NOTIF";
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS, MODE_PRIVATE);
+        return sharedPreferences.getBoolean(PREFS_NOTIF, true);
     }
 }
