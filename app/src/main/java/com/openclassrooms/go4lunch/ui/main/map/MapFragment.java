@@ -29,15 +29,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.openclassrooms.go4lunch.databinding.FragmentMapBinding;
 import com.openclassrooms.go4lunch.datas.repositories.PlaceRepository;
-import com.openclassrooms.go4lunch.models.User;
 import com.openclassrooms.go4lunch.models.maps.Result;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

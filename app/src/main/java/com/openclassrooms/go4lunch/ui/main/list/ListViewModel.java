@@ -28,7 +28,7 @@ public class ListViewModel extends ViewModel {
     }
 
     public Location getLocation(){
-        return placeRepository.getCurrentLocation();
+        return PlaceRepository.getCurrentLocation();
     }
 
     public Task<QuerySnapshot> getUserCollection(){

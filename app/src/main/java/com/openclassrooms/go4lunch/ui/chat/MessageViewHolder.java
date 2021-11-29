@@ -45,7 +45,7 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         binding.messageTextView.setTextAlignment(isSender ? View.TEXT_ALIGNMENT_TEXT_END : View.TEXT_ALIGNMENT_TEXT_START);
 
         // Update date
-        if (message.getDateCreated() != null) binding.dateTextView.setText(this.convertDateToHour(message.getDateCreated()));
+        if (message.getDateCreated() != null) binding.dateTextView.setText(convertDateToHour(message.getDateCreated()));
 
         // Update profile picture
         if (message.getUser().getPhotoUrl() != null)

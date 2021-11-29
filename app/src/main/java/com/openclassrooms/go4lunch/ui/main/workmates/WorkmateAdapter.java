@@ -42,13 +42,9 @@ public class WorkmateAdapter extends RecyclerView.Adapter<WorkmateAdapter.Workma
         User user = users.get(position);
         String text = user.getFullname();
         if (user.getPlaceName() != null){
-            /*text = text + " " +
-                    context.getResources().getString(R.string.eating) + " " +
-                    user.getPlaceName();*/
             holder.workmateText.setTypeface(Typeface.DEFAULT_BOLD);
             holder.itemView.setOnClickListener(clickListener(user.getPlaceId()));
         } else {
-            //text = text + " " + context.getResources().getString(R.string.no_decided);
             holder.workmateText.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC));
             holder.workmateText.setTextColor(context.getResources().getColor(R.color.grey));
         }

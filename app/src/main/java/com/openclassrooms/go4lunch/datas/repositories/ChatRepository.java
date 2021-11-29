@@ -8,9 +8,8 @@ import com.openclassrooms.go4lunch.models.User;
 
 public class ChatRepository {
     private static final String CHAT_COLLECTION = "chats";
-    private static final String MESSAGE_COLLECTION = "messages";
     private static volatile ChatRepository instance;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     private ChatRepository() { this.userRepository = UserRepository.getInstance(); }
 

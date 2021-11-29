@@ -2,12 +2,9 @@ package com.openclassrooms.go4lunch;
 
 import static org.junit.Assert.assertEquals;
 
-import android.util.Log;
-
 import com.openclassrooms.go4lunch.ui.chat.ChatAdapter;
 import com.openclassrooms.go4lunch.ui.chat.MessageViewHolder;
 import com.openclassrooms.go4lunch.ui.details.DetailsActivity;
-import com.openclassrooms.go4lunch.ui.main.workmates.WorkmateAdapter;
 
 import org.junit.Test;
 

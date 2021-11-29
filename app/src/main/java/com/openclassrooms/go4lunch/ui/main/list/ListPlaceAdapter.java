@@ -56,9 +56,9 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
             holder.placerating.setRating(result.getRating());
         }
 
-        /*Glide.with(context)
+        Glide.with(context)
             .load(getPhotoUrl(result.getPhotos()))
-            .into(holder.placePic);*/
+            .into(holder.placePic);
 
         int countUser = result.getListUser().size();
         if (countUser > 0) {
