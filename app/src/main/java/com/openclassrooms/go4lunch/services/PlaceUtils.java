@@ -24,7 +24,6 @@ public class PlaceUtils {
 
     public static void getResultWithUser(Task<QuerySnapshot> taskUser, Result result) {
         List<User> usersList = new ArrayList<>();
-        //listUser.addOnCompleteListener(taskUser -> {
             for (QueryDocumentSnapshot document : taskUser.getResult()) {
                 User user = document.toObject(User.class);
                 if (result.getPlace_id().equals(user.getPlaceId())) {
@@ -32,6 +31,5 @@ public class PlaceUtils {
                 }
                 result.setListUser(usersList);
             }
-       // });
     }
 }

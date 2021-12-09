@@ -60,7 +60,11 @@ public class ListPlaceAdapter extends RecyclerView.Adapter<ListPlaceAdapter.List
             .load(getPhotoUrl(result.getPhotos()))
             .into(holder.placePic);
 
-        int countUser = result.getListUser().size();
+        int countUser = 0 ;
+        if (result.getListUser() != null) {
+            countUser = result.getListUser().size();
+        }
+
         if (countUser > 0) {
             holder.placePerson.setVisibility(View.VISIBLE);
             holder.placePerson.setText(String.valueOf(countUser));
