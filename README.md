@@ -23,7 +23,7 @@ employés pour les inviter à rejoindre leurs collègues.
 * Traduction français anglais
 * Test
 
-## Tech et lib utilisé :
+## Tech et libs utilisées :
 * Java
 * Firebase
 * Firebaseui
