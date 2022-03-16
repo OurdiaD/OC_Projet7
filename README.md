@@ -18,7 +18,7 @@ employés pour les inviter à rejoindre leurs collègues.
 * Ajout de restaurants en favoris
 * Sélectionné un restaurants 
 * Afficher les restaurants choisi par les autres utilisateurs (carte et liste)
-* Notification a midi avec liste des utilisateurs ayant choisi le même restaurant 
+* Notification à midi avec liste des utilisateurs ayant choisi le même restaurant 
 * Chat
 * Traduction français anglais
 * Test
@@ -32,4 +32,9 @@ employés pour les inviter à rejoindre leurs collègues.
 * Api maps 
 * Place 
 * Retrofit
+* Glide
+* Robolectric
+
+## Screenshots
+
 
