@@ -13,6 +13,7 @@ employés pour les inviter à rejoindre leurs collègues.
 ## Fonctionnalités :
 * Compatibilité v21 ou supérieure 
 * Authentification google et facebook
+* Géo-localisation
 * Afficher les restaurants a proximité (liste et carte)
 * Acces details restaurants (liste et carte)
 * Ajout de restaurants en favoris
